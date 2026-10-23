@@ -1,4 +1,4 @@
-import { VERTICAL, SYMBOL_VIEWBOX, HORIZONTAL, P01 } from './brand-paths.js';
+import { VERTICAL, SYMBOL_VIEWBOX, HORIZONTAL, P01, AVRA } from './brand-paths.js';
 
 const { gsap, ScrollTrigger, Lenis } = window;
 gsap.registerPlugin(ScrollTrigger);
@@ -25,6 +25,7 @@ const LOGOS = {
   horizontal: () => svg(HORIZONTAL.viewBox, HORIZONTAL.paths.map((d) => fillPath(d)).join('')),
   symbol: () => svg(SYMBOL_VIEWBOX, fillPath(VERTICAL.symbol)),
   p01: () => svg(P01.viewBox, fillPath(P01.d), 'preserveAspectRatio="xMidYMid meet"'),
+  avra: () => svg(AVRA.viewBox, fillPath(AVRA.d)),
   'symbol-draw': () => svg(SYMBOL_VIEWBOX, subpaths(VERTICAL.symbol).map((d) => `<path class="stroke" d="${d}"/>`).join('') + `<path class="full" fill-rule="evenodd" d="${VERTICAL.symbol}"/>`),
 };
 $$('[data-logo]').forEach((el) => {
@@ -273,63 +274,99 @@ $$('.icon > *').forEach((p) => p.style.setProperty('--len', Math.ceil(p.getTotal
 (function buildSequence() {
   const host = $('#buildLogo');
   const subs = subpaths(VERTICAL.symbol);
-  // identifica o contorno mais interno (o "lago") pela menor área de bbox
-  const areas = subs.map((d) => {
+  const boxes = subs.map((d) => {
     const n = d.match(/-?\d+\.?\d*/g).map(Number);
     const xs = n.filter((_, i) => i % 2 === 0); const ys = n.filter((_, i) => i % 2 === 1);
-    return (Math.max(...xs) - Math.min(...xs)) * (Math.max(...ys) - Math.min(...ys));
+    return { x0: Math.min(...xs), x1: Math.max(...xs), y0: Math.min(...ys), y1: Math.max(...ys) };
   });
-  const order = subs.map((_, i) => i).sort((a, b) => areas[a] - areas[b]); // de dentro para fora
-  const lakeIdx = order[0];
+  const area = (b) => (b.x1 - b.x0) * (b.y1 - b.y0);
+  const order = subs.map((_, i) => i).sort((a, b) => area(boxes[a]) - area(boxes[b])); // de dentro para fora
+  const lake = boxes[order[0]];
+  const cx = (lake.x0 + lake.x1) / 2; const cy = (lake.y0 + lake.y1) / 2;
+  const outer = boxes[order[order.length - 1]];
+  const label = (cls, x1, y1, x2, y2, text, anchor = 'start') => `
+    <g class="b-label ${cls}"><circle cx="${x1}" cy="${y1}" r="3.2"/><path d="M${x1} ${y1} L${x2} ${y2}"/>
+    <text x="${x2 + (anchor === 'start' ? 8 : -8)}" y="${y2 + 4}" text-anchor="${anchor}">${text}</text></g>`;
   host.innerHTML = svg(VERTICAL.viewBox, `
+    <defs><radialGradient id="lakeGrad" cx="50%" cy="45%" r="60%">
+      <stop offset="0" stop-color="#D7C18C" stop-opacity=".55"/><stop offset=".55" stop-color="#A0AD91" stop-opacity=".75"/><stop offset="1" stop-color="#667451" stop-opacity=".7"/>
+    </radialGradient></defs>
     <circle class="b-guide b-seal" cx="639.5" cy="337.5" r="182"/>
-    <path class="b-lake" d="${subs[lakeIdx]}"/>
-    ${order.map((i) => `<path class="b-stroke" data-i="${i}" d="${subs[i]}"/>`).join('')}
+    <path class="b-lake" fill="url(#lakeGrad)" d="${subs[order[0]]}"/>
+    <g class="b-ripples">${[0, 1, 2, 3].map(() => `<ellipse cx="${cx}" cy="${cy}" rx="10" ry="7"/>`).join('')}</g>
+    ${order.map((i) => `<path class="b-stroke" d="${subs[i]}"/>`).join('')}
     <path class="b-fill" fill-rule="evenodd" d="${VERTICAL.symbol}"/>
+    ${label('l-lake', cx, cy, cx + 70, outer.y0 - 34, 'Lago preservado')}
+    ${label('l-margin', boxes[order[3]].x0 + 6, cy + 10, outer.x0 - 30, cy + 70, 'Margens', 'end')}
+    ${label('l-land', outer.x1 - 6, cy + 30, outer.x1 + 20, cy + 90, 'Vida ao redor')}
     <clipPath id="letterClip"><rect class="b-clip" x="330" y="500" width="0" height="170"/></clipPath>
     <g clip-path="url(#letterClip)"><path class="b-letter" fill-rule="evenodd" d="${VERTICAL.lettering}"/></g>
     <path class="b-res" fill-rule="evenodd" d="${VERTICAL.residence}"/>
     <line class="b-guide b-base" x1="330" x2="950" y1="606" y2="606"/>`);
 
+  const q = (s) => $(s, host);
   const strokes = $$('.b-stroke', host);
   strokes.forEach((p) => { const l = p.getTotalLength(); p.style.strokeDasharray = l; p.style.strokeDashoffset = l; });
-  const seal = $('.b-seal', host); const sealLen = seal.getTotalLength();
-  seal.style.strokeDasharray = `4 6`;
-  gsap.set(seal, { opacity: 0, scale: 0.7, transformOrigin: '50% 50%' });
-  gsap.set($('.b-lake', host), { opacity: 0, scale: 0.4, transformOrigin: '50% 50%', transformBox: 'fill-box' });
-  gsap.set($('.b-fill', host), { opacity: 0 });
-  gsap.set($('.b-res', host), { opacity: 0, scaleX: 0.6, transformOrigin: '50% 50%', transformBox: 'fill-box' });
-  gsap.set($('.b-base', host), { opacity: 0, scaleX: 0, transformOrigin: '50% 50%', transformBox: 'fill-box' });
-  gsap.set(host, { y: 90 });
+  const ripples = $$('.b-ripples ellipse', host);
+  const labels = $$('.b-label', host);
+  labels.forEach((g) => { const p = $('path', g); const l = p.getTotalLength(); p.style.strokeDasharray = l; p.style.strokeDashoffset = l; });
+  gsap.set(q('.b-seal'), { opacity: 0, scale: 0.7, transformOrigin: '50% 50%' });
+  gsap.set(q('.b-lake'), { opacity: 0, scale: 0.2, transformOrigin: '50% 50%', transformBox: 'fill-box' });
+  gsap.set(q('.b-fill'), { opacity: 0 });
+  gsap.set(labels, { opacity: 0 });
+  gsap.set(q('.b-res'), { opacity: 0, scaleX: 0.6, transformOrigin: '50% 50%', transformBox: 'fill-box' });
+  gsap.set(q('.b-base'), { opacity: 0, scaleX: 0, transformOrigin: '50% 50%', transformBox: 'fill-box' });
+  gsap.set(host, { y: 70 });
 
-  const steps = $$('.build__steps li');
+  const steps = $$('.tale__step'); const dots = $$('.build__dots span');
+  const N = steps.length;
+  let current = 0;
   const setStep = (p) => {
-    const i = Math.min(3, Math.floor(p * 4.0001));
-    steps.forEach((li, k) => li.classList.toggle('is-active', k === i));
+    const i = Math.min(N - 1, Math.floor(p * N * 0.9999));
+    if (i === current) return;
+    current = i;
+    steps.forEach((el, k) => el.classList.toggle('is-active', k === i));
+    dots.forEach((el, k) => el.classList.toggle('is-active', k <= i));
   };
 
+  const showLabel = (g, at, until, tl) => {
+    tl.to(g, { opacity: 1, duration: 0.2 }, at).to($('path', g), { strokeDashoffset: 0, duration: 0.35 }, at)
+      .to(g, { opacity: 0, duration: 0.25 }, until);
+  };
   const tl = gsap.timeline({
     defaults: { ease: 'none' },
     scrollTrigger: {
-      trigger: '.build', start: 'top top', end: () => `+=${innerHeight * 3.2}`, pin: '.build__pin', scrub: 0.8,
+      trigger: '.build', start: 'top top', end: () => `+=${innerHeight * 5}`, pin: '.build__pin', scrub: 0.8,
       onUpdate: (s) => { setStep(s.progress); gsap.set('.build__bar span', { scaleX: s.progress }); },
     },
   });
-  tl.to($('.b-lake', host), { opacity: 1, scale: 1, duration: 0.6, ease: 'power2.out' }, 0)
-    .to(strokes[0], { strokeDashoffset: 0, duration: 0.7 }, 0.1)
-    .to(strokes.slice(1), { strokeDashoffset: 0, duration: 0.8, stagger: 0.12 }, 1)
-    .to(seal, { opacity: 1, scale: 1, rotate: 40, duration: 0.8 }, 2)
-    .to($('.b-fill', host), { opacity: 1, duration: 0.6 }, 2.2)
-    .to($('.b-lake', host), { opacity: 0, duration: 0.5 }, 2.4)
-    .to(strokes, { opacity: 0, duration: 0.4 }, 2.6)
-    .to(seal, { opacity: 0, scale: 1.15, duration: 0.5 }, 2.9)
-    .to(host, { y: 0, duration: 0.8 }, 3)
-    .to($('.b-base', host), { opacity: 1, scaleX: 1, duration: 0.5 }, 3)
-    .to($('.b-clip', host), { attr: { width: 620 }, duration: 0.9 }, 3.2)
-    .to($('.b-res', host), { opacity: 1, scaleX: 1, duration: 0.6 }, 3.7)
-    .to($('.b-base', host), { opacity: 0, duration: 0.3 }, 4.1)
-    .to({}, { duration: 0.3 });
-  void sealLen;
+  // 1 · a água: o lago surge e ondula
+  tl.to(q('.b-lake'), { opacity: 1, scale: 1, duration: 0.7, ease: 'power2.out' }, 0)
+    .to(strokes[0], { strokeDashoffset: 0, duration: 0.6 }, 0.15);
+  ripples.forEach((r, k) => {
+    tl.fromTo(r, { attr: { rx: 12, ry: 8 }, opacity: 0.9 }, { attr: { rx: 230, ry: 170 }, opacity: 0, duration: 1.4, ease: 'power1.out' }, 0.25 + k * 0.35);
+  });
+  showLabel(labels[0], 0.45, 1.75, tl);
+  // 2 · as margens: contornos se abrem como ondas
+  tl.to(strokes.slice(1, 5), { strokeDashoffset: 0, duration: 0.6, stagger: 0.16 }, 1.05);
+  showLabel(labels[1], 1.35, 2.75, tl);
+  // 3 · a vida ao redor: anéis externos
+  tl.to(strokes.slice(5), { strokeDashoffset: 0, duration: 0.6, stagger: 0.16 }, 2.05);
+  showLabel(labels[2], 2.35, 3.2, tl);
+  // 4 · o selo: os contornos se fecham; o lago vira o vazio central
+  tl.to(q('.b-seal'), { opacity: 1, scale: 1, rotate: 40, duration: 0.7 }, 3)
+    .to(q('.b-fill'), { opacity: 1, duration: 0.6 }, 3.2)
+    .to(strokes, { opacity: 0, duration: 0.4 }, 3.5)
+    .to(q('.b-lake'), { opacity: 0.35, duration: 0.5 }, 3.4)
+    .to(q('.b-seal'), { opacity: 0, scale: 1.15, duration: 0.4 }, 3.75)
+  // 5 · o nome
+    .to(q('.b-lake'), { opacity: 0, duration: 0.4 }, 4)
+    .to(host, { y: 0, duration: 0.7 }, 4)
+    .to(q('.b-base'), { opacity: 1, scaleX: 1, duration: 0.4 }, 4.05)
+    .to(q('.b-clip'), { attr: { width: 620 }, duration: 0.6 }, 4.2)
+    .to(q('.b-res'), { opacity: 1, scaleX: 1, duration: 0.45 }, 4.55)
+    .to(q('.b-base'), { opacity: 0, duration: 0.25 }, 4.8)
+    .to({}, { duration: 0.2 }, 4.8);
 })();
 
 /* ------------------------------------------------------------------
@@ -426,37 +463,6 @@ function updateType() { setRange(typeSize); tester.style.fontSize = `${typeSize.
 typeSize.addEventListener('input', updateType);
 updateType();
 if (innerWidth < 760) { typeSize.value = 44; updateType(); }
-
-/* ------------------------------------------------------------------
-   P01 — camadas com profundidade de campo
-------------------------------------------------------------------- */
-(function p01Art() {
-  const art = $('#p01Art');
-  art.innerHTML = svg(P01.viewBox, `
-    <g class="p01-back" style="filter:blur(7px)"><path fill-rule="evenodd" d="${P01.d}" fill="#A0AD91" opacity=".28"/></g>
-    <g class="p01-mid" style="filter:blur(2px)"><path fill-rule="evenodd" d="${P01.d}" fill="#A0AD91" opacity=".45"/></g>
-    <g class="p01-front"><path fill-rule="evenodd" d="${P01.d}" fill="#A0AD91"/></g>`, 'preserveAspectRatio="xMidYMid meet"');
-  const front = $('.p01-front', art); const mid = $('.p01-mid', art); const back = $('.p01-back', art);
-  [front, mid, back].forEach((g) => gsap.set(g, { transformOrigin: '50% 50%', transformBox: 'fill-box' }));
-  const tl = gsap.timeline({ defaults: { ease: 'none' }, scrollTrigger: { trigger: '.p01', start: 'top top', end: () => `+=${innerHeight * 1.6}`, pin: '.p01__pin', scrub: 1 } });
-  tl.fromTo(front, { x: 520, y: 80, scale: 0.85 }, { x: 0, y: 0, scale: 1, duration: 1 }, 0)
-    .fromTo(mid, { x: 760, y: -40, scale: 1.25, rotate: -6 }, { x: 140, y: -70, scale: 1.3, rotate: -3, duration: 1 }, 0)
-    .fromTo(back, { x: 900, y: 120, scale: 1.7, rotate: 8 }, { x: 260, y: 40, scale: 1.8, rotate: 4, duration: 1 }, 0)
-    .fromTo('.p01__copy', { y: 40 }, { y: -40, duration: 1 }, 0);
-  if (finePointer && !reduceMotion) {
-    const sec = $('.p01');
-    sec.addEventListener('pointermove', () => {
-      gsap.to('#p01Art', { rotationY: pointer.nx * 6, rotationX: -pointer.ny * 4, x: pointer.nx * -20, transformPerspective: 1200, duration: 1.2, ease: 'power3.out' });
-    });
-  }
-})();
-$$('.compose__card').forEach((c) => {
-  const p = $('.compose__p01', c);
-  const base = getComputedStyle(p).transform;
-  c.addEventListener('pointerenter', () => gsap.to(p, { x: -24, duration: 1.2, ease: 'expo.out' }));
-  c.addEventListener('pointerleave', () => gsap.to(p, { x: 0, duration: 1.2, ease: 'expo.out' }));
-  void base;
-});
 
 /* ------------------------------------------------------------------
    Tapume 3D (painéis que se abrem como dominó)

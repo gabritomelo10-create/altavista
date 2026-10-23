@@ -9,7 +9,7 @@
   <link rel="icon" href="assets/brand/symbol.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600&family=Marcellus&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600&family=Manrope:wght@500&family=Marcellus&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="assets/css/style.css">
   <script type="importmap">
     { "imports": { "three": "./assets/vendor/three/three.module.min.js", "three/addons/": "./assets/vendor/three/addons/" } }
@@ -56,7 +56,7 @@
         <span>Mova o mouse · clique no símbolo</span>
         <span class="hero__scroll"><i></i>Role para explorar</span>
       </div>
-      <div class="hero__meta"><span>Edição 01</span><span>Outubro 2026</span></div>
+      <div class="hero__meta"><span class="endorse"><em>Um empreendimento</em><span class="endorse__mark" data-logo="avra"></span></span><span>Edição 01 · Outubro 2026</span></div>
     </section>
 
     <!-- ============ MANIFESTO ============ -->
@@ -70,7 +70,7 @@
           <li><a href="#simbolo" data-cursor="ver"><i>02</i><span>Sistema de logo</span><b>Símbolo, versões e proteção</b></a></li>
           <li><a href="#cores" data-cursor="ver"><i>03</i><span>Cores e materialidade</span><b>Verdes, dourados e acabamentos</b></a></li>
           <li><a href="#tipografia" data-cursor="ver"><i>04</i><span>Tipografia</span><b>Marcellus + DM Sans</b></a></li>
-          <li><a href="#linguagem" data-cursor="ver"><i>05</i><span>Linguagem visual</span><b>P01 · Margens ampliadas</b></a></li>
+          <li><a href="#linguagem" data-cursor="ver"><i>05</i><span>Linguagem visual</span><b>Fotografia, ícones e P01</b></a></li>
           <li><a href="#aplicacoes" data-cursor="ver"><i>06</i><span>Aplicações</span><b>Mockups em 3D e campanha</b></a></li>
         </ol>
       </div>
@@ -151,6 +151,32 @@
       </div>
     </section>
 
+    <!-- Endosso AVRA -->
+    <section class="avra section--mata" id="avra">
+      <div class="avra__glow" aria-hidden="true"></div>
+      <div class="wrap avra__grid">
+        <div class="avra__copy">
+          <p class="eyebrow eyebrow--gold">Quem realiza</p>
+          <h2 class="h2 h2--light" data-split>Um empreendimento da AVRA Incorporadora.</h2>
+          <p class="lead reveal-up">A AVRA é uma incorporadora de alto padrão de Boa Vista, Roraima, guiada por uma ideia: criar lugares onde a vida respira. O Alta Vista Residence, condomínio fechado de lotes, é o seu primeiro empreendimento.</p>
+          <a class="avra__link reveal-up" href="https://gabritomelo10-create.github.io/avra/" target="_blank" rel="noopener" data-cursor="abrir">Conhecer a marca AVRA <span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="avra__lockup reveal-up" data-tilt>
+          <div class="avra__lockup-main"><span data-logo="vertical"></span></div>
+          <div class="avra__lockup-rule"></div>
+          <div class="endorse endorse--stack"><em>Um empreendimento</em><span class="endorse__mark" data-logo="avra"></span><small>INCORPORADORA</small></div>
+          <span class="tilt-card__glare"></span>
+        </div>
+      </div>
+      <div class="wrap avra__facts">
+        <div class="reveal-up"><b>Boa Vista · RR</b><span>Origem da AVRA</span></div>
+        <div class="reveal-up"><b>Alto padrão</b><span>Segmento</span></div>
+        <div class="reveal-up"><b>1º empreendimento</b><span>Alta Vista Residence</span></div>
+        <div class="reveal-up"><b>Lotes</b><span>Condomínio fechado</span></div>
+      </div>
+      <p class="wrap note note--light">Alta Vista Residence é a marca do empreendimento e aparece em primeiro plano. A AVRA entra como endosso institucional, sempre secundário, em menor escala e com área de respiro.</p>
+    </section>
+
     <!-- Linguagem verbal -->
     <section class="verbal section--mata">
       <div class="marquee" aria-hidden="true">
@@ -193,9 +219,9 @@
       <div class="parallax-media" data-parallax="0.3"><img src="assets/img/lago.webp" alt="Lago ao amanhecer cercado por mata, com névoa sobre a água" loading="lazy"></div>
       <div class="chapter-cover__shade"></div>
       <div class="wrap chapter-cover__content">
-        <p class="eyebrow eyebrow--gold">02 / Alta Vista Residence</p>
-        <h2 class="display" data-split>O lugar ganha uma assinatura.</h2>
-        <p class="lead reveal-up">Margens, água e pertencimento se encontram em um símbolo orgânico com presença própria.</p>
+        <p class="eyebrow eyebrow--gold">02 / Origem do símbolo</p>
+        <h2 class="display" data-split>No centro de tudo, um lago.</h2>
+        <p class="lead reveal-up">O Alta Vista Residence nasce ao redor de um lago de preservação natural. Ele não fica nos fundos nem na borda do terreno: ocupa o coração do lugar. A marca começa exatamente aí.</p>
       </div>
     </section>
 
@@ -207,17 +233,18 @@
           <div class="build__logo" id="buildLogo" aria-label="Construção da assinatura Alta Vista Residence" role="img"></div>
         </div>
         <div class="build__copy">
-          <p class="eyebrow">Conceito do símbolo</p>
-          <h2 class="h2">A natureza ocupa o centro.</h2>
-          <ol class="build__steps">
-            <li class="is-active"><i>01</i><div><b>O lago</b><span>O vazio central pode ser lido como o lago.</span></div></li>
-            <li><i>02</i><div><b>As margens</b><span>Os contornos ao redor evocam suas margens e o território que o acolhe.</span></div></li>
-            <li><i>03</i><div><b>O selo</b><span>A forma de selo sugere pertencimento, cuidado e unidade.</span></div></li>
-            <li><i>04</i><div><b>O lettering</b><span>O lettering serifado acrescenta presença e elegância; as curvas dos A dialogam com a linguagem orgânica do símbolo.</span></div></li>
-          </ol>
+          <p class="eyebrow">Construção do símbolo</p>
+          <div class="tale" aria-live="polite">
+            <article class="tale__step is-active"><i>01 · A água</i><h3>Primeiro, o lago.</h3><p>Antes de qualquer traço, existe a água. Uma área de preservação natural no centro do terreno, que permanece como está: lago, mata e silêncio no coração do bairro.</p></article>
+            <article class="tale__step"><i>02 · As margens</i><h3>Depois, as margens.</h3><p>Como a onda que se abre quando uma folha toca a água, cada contorno se afasta do centro. São as margens: a vegetação que protege o lago e os caminhos que o contornam.</p></article>
+            <article class="tale__step"><i>03 · O território</i><h3>A vida ao redor.</h3><p>Nos anéis mais externos estão as casas, a convivência e a rotina das famílias. Quem mora no Alta Vista vive ao redor do lago e cuida dele.</p></article>
+            <article class="tale__step"><i>04 · O selo</i><h3>Um selo de pertencimento.</h3><p>Quando os contornos se fecham, nasce um selo orgânico, sem cantos. O vazio do centro continua sendo o lago: um espaço que não se ocupa, se protege.</p></article>
+            <article class="tale__step"><i>05 · O nome</i><h3>O nome se apoia na água.</h3><p>O lettering serifado chega com presença e elegância, e as curvas dos A respondem às margens do símbolo. Um lago no centro. Uma marca ao redor dele.</p></article>
+          </div>
+          <div class="build__dots" aria-hidden="true"><span class="is-active"></span><span></span><span></span><span></span><span></span></div>
           <div class="build__bar"><span></span></div>
         </div>
-        <p class="note build__note">Leitura conceitual do desenho. O emblema não representa um levantamento topográfico nem o contorno geográfico real do lago.</p>
+        <p class="note build__note">Leitura conceitual do desenho: o emblema não reproduz o levantamento topográfico nem o contorno geográfico real do lago.</p>
       </div>
     </section>
 
@@ -431,40 +458,7 @@
       <div class="wrap chapter-cover__content">
         <p class="eyebrow eyebrow--gold">05 / Alta Vista Residence</p>
         <h2 class="display" data-split>As margens viram linguagem.</h2>
-        <p class="lead reveal-up">O P01 amplia os contornos do selo e leva sua personalidade para além da logo.</p>
-      </div>
-    </section>
-
-    <section class="p01 section--mineral" id="p01">
-      <div class="p01__pin">
-        <div class="p01__art" id="p01Art" aria-hidden="true"></div>
-        <div class="wrap p01__copy">
-          <p class="eyebrow">P01 / Margens ampliadas</p>
-          <h2 class="h2" data-split>Um gesto amplo, com espaço para respirar.</h2>
-          <p class="lead lead--dark reveal-up">O recorte preserva a origem orgânica do símbolo. As faixas entram e saem do enquadramento, criando profundidade e uma área livre para a informação.</p>
-          <p class="note">P01 é o único elemento gráfico adotado. Não usar P02, tramas de selos ou novas ondas como substitutos.</p>
-        </div>
-      </div>
-    </section>
-
-    <section class="compose section--mineral">
-      <div class="wrap">
-        <p class="eyebrow">Composição</p>
-        <h2 class="h2" data-split>Logo e P01: protagonismos diferentes.</h2>
-        <div class="compose__grid">
-          <figure class="compose__card" data-tilt>
-            <div class="compose__art compose__art--a"><span data-logo="horizontal" class="compose__logo"></span><span data-logo="p01" class="compose__p01"></span></div>
-            <figcaption><b>Recorte amplo</b>Ampliar proporcionalmente e recortar pelas bordas.</figcaption>
-          </figure>
-          <figure class="compose__card" data-tilt>
-            <div class="compose__art compose__art--b"><p>Mais espaço.<br>Mais natureza.</p><span data-logo="p01" class="compose__p01"></span></div>
-            <figcaption><b>Contraste discreto</b>Manter as faixas separadas e o texto legível.</figcaption>
-          </figure>
-          <figure class="compose__card" data-tilt>
-            <div class="compose__art compose__art--c"><span data-logo="horizontal" class="compose__logo"></span><span data-logo="p01" class="compose__p01"></span></div>
-            <figcaption><b>Respiro protegido</b>Não colocar o grafismo sobre a assinatura.</figcaption>
-          </figure>
-        </div>
+        <p class="lead reveal-up">Fotografia, ícones e o P01 levam a personalidade do selo para além da logo, com sobriedade e espaço para respirar.</p>
       </div>
     </section>
 
@@ -642,9 +636,10 @@
         <p class="eyebrow eyebrow--gold">Mais espaço</p>
         <h2 class="display" data-split>Para estar presente.</h2>
         <div class="finale__sign"><span data-logo="horizontal"></span></div>
+        <div class="endorse endorse--finale"><em>Um empreendimento</em><span class="endorse__mark" data-logo="avra"></span><small>INCORPORADORA</small></div>
       </div>
       <footer class="footer wrap">
-        <span>Edição 01 · 22.10.2026</span>
+        <span>Edição 01 · 22.10.2026 · Um empreendimento AVRA Incorporadora</span>
         <span>Imagens e mockups gerados por IA para demonstração; não representam a implantação real.</span>
         <img src="assets/img/britto-group.png" alt="Britto Group" class="footer__britto">
       </footer>

@@ -19,12 +19,12 @@ Funciona como site estático em qualquer hospedagem (GitHub Pages, Netlify, Verc
 | Abertura | O símbolo se desenha traço a traço e ganha o preenchimento dourado |
 | Hero 3D | O símbolo fica em camadas douradas (uma por contorno) com luz que segue o mouse, *bloom*, partículas com profundidade de campo (bokeh) e parallax. Clicar no símbolo dispara uma onda que sai do lago para as margens. Ao rolar, as camadas se abrem como um relevo topográfico |
 | Essência / Nome | Títulos revelados palavra por palavra, cartões com *tilt* 3D e brilho, palavras gigantes em paralaxe, ícones que se desenham no hover |
-| Construção do símbolo | Seção fixa controlada pela rolagem: lago, depois margens, selo e lettering |
+| Construção do símbolo | Narrativa fixa na rolagem a partir do lago preservado no centro do terreno: a água, as margens, a vida ao redor, o selo e o nome |
 | Versões | Troca entre vertical, horizontal e símbolo, área de proteção (x = ¼ do símbolo) no hover e controle de redução com os tamanhos mínimos do guia |
 | Fundos / usos incorretos | Prévia das 4 combinações de fundo com luz que acompanha o mouse. Cartões viram para mostrar o uso correto |
 | Paleta | Faixas que expandem no hover (com reflexo metálico nos dourados) e copiam o HEX no clique |
 | Tipografia | Teste de fonte editável (Marcellus / DM Sans), controle de tamanho e hierarquia |
-| P01 | Três camadas do grafismo com desfoque de profundidade, movidas pela rolagem e pelo mouse |
+| AVRA | Seção "Um empreendimento da AVRA Incorporadora" e endosso secundário no hero e no fechamento |
 | Estúdio 3D | Mockups refeitos em WebGL: **letreiro dourado do pavilhão** (halo retroiluminado), **garrafa** (tampa abre), **caderno** (capa abre), **crachá** (balança e gira) e **convite** (baixo-relevo do P01). Dá para arrastar e clicar em todos |
 | Tapume 3D | Os painéis da campanha se abrem como dominó durante a rolagem |
 | Instagram / stories | Tablet e celular em CSS 3D que reagem ao mouse |
