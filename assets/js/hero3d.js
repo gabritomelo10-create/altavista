@@ -145,8 +145,8 @@ export function initHero(canvas, pointer) {
     renderer.setSize(w, h, false); composer.setSize(w, h);
     camera.aspect = w / h; camera.updateProjectionMatrix();
     const mobile = w < 760;
-    root.position.set(mobile ? 0 : 2.15 * Math.min(1, camera.aspect / 1.6), mobile ? 1.25 : 0.25, 0);
-    root.scale.setScalar(mobile ? 0.62 : 1);
+    root.position.set(mobile ? 0 : 2.15 * Math.min(1, camera.aspect / 1.6), mobile ? 1.9 : 0.25, 0);
+    root.scale.setScalar(mobile ? 0.5 : 1);
   }
   layout();
   addEventListener('resize', layout);

@@ -117,8 +117,10 @@ export function initStudio(canvasEl, { onSelect }) {
     it.spin.rotation.set(it.rest?.x ?? 0, it.rest?.y ?? 0, 0);
     gsap.fromTo(it.group.scale, { x: 0.001, y: 0.001, z: 0.001 }, { x: 1, y: 1, z: 1, duration: 1.3, delay: prev ? 0.4 : 0, ease: 'expo.out' });
     gsap.fromTo(it.group.rotation, { y: -1.4 }, { y: 0, duration: 1.6, delay: prev ? 0.4 : 0, ease: 'expo.out' });
-    gsap.to(camera.position, { ...it.cam.pos, duration: 1.6, ease: 'expo.inOut' });
-    gsap.to(camTarget, { ...it.cam.target, duration: 1.6, ease: 'expo.inOut' });
+    // em telas largas o objeto fica à direita, longe do título
+    const shift = camera.aspect > 1.25 ? (it.shift ?? 1.25) : 0;
+    gsap.to(camera.position, { ...it.cam.pos, x: it.cam.pos.x - shift, duration: 1.6, ease: 'expo.inOut' });
+    gsap.to(camTarget, { ...it.cam.target, x: it.cam.target.x - shift, duration: 1.6, ease: 'expo.inOut' });
     gsap.to(ground.position, { y: it.groundY ?? -1.5, duration: 1.2, ease: 'expo.inOut' });
     gsap.to(ground.material, { opacity: it.groundY === null ? 0 : 0.28, duration: 0.8 });
     drag.vx = drag.vy = 0;
@@ -189,6 +191,7 @@ export function initStudio(canvasEl, { onSelect }) {
 ================================================================= */
 function makeSign() {
   const group = new THREE.Group(); const spin = new THREE.Group(); group.add(spin);
+  spin.scale.setScalar(0.72);
 
   // parede mineral com textura de reboco
   const [wc, wx] = canvas(1024, 640);
@@ -239,10 +242,10 @@ function makeSign() {
 
   let lit = false;
   const it = {
-    group, spin, limitSpin: 0.7, rest: { x: 0, y: -0.18 }, groundY: null,
-    cam: { pos: { x: 0, y: 0.3, z: 9.6 }, target: { x: 0, y: 0.25, z: 0 } },
-    reset() { lit = true; haloMat.opacity = 0; window.gsap.to(haloMat, { opacity: 0.85, duration: 2.4, delay: 1, ease: 'power2.inOut' }); },
-    click() { lit = !lit; window.gsap.to(haloMat, { opacity: lit ? 0.85 : 0, duration: 1.2, ease: 'power2.inOut' }); window.gsap.to(spot, { intensity: lit ? 60 : 110, duration: 1.2 }); },
+    group, spin, limitSpin: 0.7, rest: { x: 0, y: -0.18 }, groundY: null, shift: 2.0,
+    cam: { pos: { x: 0, y: 0.3, z: 10.5 }, target: { x: 0, y: 0.1, z: 0 } },
+    reset() { lit = true; haloMat.opacity = 0; window.gsap.to(haloMat, { opacity: 0.5, duration: 2.4, delay: 1, ease: 'power2.inOut' }); },
+    click() { lit = !lit; window.gsap.to(haloMat, { opacity: lit ? 0.5 : 0, duration: 1.2, ease: 'power2.inOut' }); window.gsap.to(spot, { intensity: lit ? 60 : 110, duration: 1.2 }); },
     update(dt, t) { spot.position.x = Math.sin(t * 0.5) * 1.2; },
   };
   return it;
@@ -504,7 +507,7 @@ function makeInvite() {
   const [rc, rx] = canvas(64, 512);
   rx.fillStyle = HEX.oliva; rx.fillRect(0, 0, 64, 512);
   for (let i = 0; i < 64; i += 2) { rx.fillStyle = `rgba(0,0,0,${Math.random() * 0.12})`; rx.fillRect(i, 0, 1, 512); }
-  const ribbonMat = new THREE.MeshPhysicalMaterial({ map: tex(rc), roughness: 0.55, sheen: 1, sheenColor: new THREE.Color(HEX.douradoClaro), sheenRoughness: 0.4 });
+  const ribbonMat = new THREE.MeshPhysicalMaterial({ map: tex(rc), roughness: 0.55, sheen: 0.35, sheenColor: new THREE.Color(HEX.douradoClaro), sheenRoughness: 0.4 });
   const ribbon = new THREE.Mesh(new THREE.BoxGeometry(0.34, 3.7, 0.02), ribbonMat);
   ribbon.position.set(-0.95, 0, 0.065); ribbon.rotation.z = 0.04; spin.add(ribbon);
   const knot = new THREE.Mesh(new THREE.SphereGeometry(0.2, 24, 16), ribbonMat);

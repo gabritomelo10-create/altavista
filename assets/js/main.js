@@ -184,7 +184,7 @@ gsap.to(manifestoWords, {
 gsap.from('.chapters li', { y: 40, opacity: 0, duration: 1, stagger: 0.08, ease: 'expo.out', scrollTrigger: { trigger: '.chapters', start: 'top 85%', once: true } });
 
 // progresso
-gsap.to('.progress span', { scaleX: 1, ease: 'none', scrollTrigger: { trigger: document.body, start: 'top top', end: 'bottom bottom', scrub: 0.3 } });
+gsap.to('.progress span', { scaleX: 1, ease: 'none', scrollTrigger: { start: 0, end: 'max', scrub: 0.3 } });
 
 /* ------------------------------------------------------------------
    Nav (claro/escuro, esconder ao descer, capítulo ativo)
@@ -201,14 +201,13 @@ function updateNavTone() {
   const sec = toneSections.find((el) => { const r = el.getBoundingClientRect(); return r.top <= 40 && r.bottom > 40; });
   if (sec) nav.classList.toggle('is-light', sec.matches('.section--mineral, .section--salvia'));
 }
-ScrollTrigger.create({
-  onUpdate: (s) => {
-    const y = s.scroll();
-    if (!nav.classList.contains('is-open')) nav.classList.toggle('is-hidden', y > lastY && y > 400);
-    lastY = y;
-    updateNavTone();
-  },
-});
+function onScrollNav() {
+  const y = window.scrollY;
+  if (!nav.classList.contains('is-open')) nav.classList.toggle('is-hidden', y > lastY && y > 400);
+  lastY = y;
+  updateNavTone();
+}
+window.addEventListener('scroll', onScrollNav, { passive: true });
 ['essencia', 'simbolo', 'cores', 'tipografia', 'linguagem', 'aplicacoes'].forEach((id, i, arr) => {
   const link = $(`.nav__links a[href="#${id}"]`);
   const next = arr[i + 1] ? `#${arr[i + 1]}` : '#fim';
