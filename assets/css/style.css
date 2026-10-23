@@ -522,12 +522,12 @@ input[type="range"]::-moz-range-thumb { width: 22px; height: 22px; border: 0; bo
 /* ---------- files ---------- */
 .files { padding: 150px 0; }
 .downloads { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-top: 80px; }
-.downloads a { display: flex; align-items: center; gap: 16px; padding: 22px 24px; border-radius: 6px; border: 1px solid color-mix(in srgb, var(--mata) 15%, transparent); transition: background .4s, color .4s, translate .6s var(--ease); font-size: 17px; }
-.downloads a [data-logo] { width: 34px; color: var(--dourado); transition: transform .8s var(--ease); }
-.downloads a i { margin-left: auto; font-style: normal; font-size: 12px; letter-spacing: .1em; color: var(--oliva); }
-.downloads a:hover { background: var(--mata); color: var(--mineral); translate: 0 -4px; }
-.downloads a:hover [data-logo] { transform: rotate(180deg) scale(1.1); color: var(--dourado-claro); }
-.downloads a:hover i { color: var(--salvia); }
+.downloads a, .downloads button { display: flex; align-items: center; gap: 16px; padding: 22px 24px; border-radius: 6px; border: 1px solid color-mix(in srgb, var(--mata) 15%, transparent); transition: background .4s, color .4s, translate .6s var(--ease); font-size: 17px; }
+.downloads a [data-logo], .downloads button [data-logo] { width: 34px; color: var(--dourado); transition: transform .8s var(--ease); }
+.downloads a i, .downloads button i { margin-left: auto; font-style: normal; font-size: 12px; letter-spacing: .1em; color: var(--oliva); }
+.downloads a:hover, .downloads button:hover { background: var(--mata); color: var(--mineral); translate: 0 -4px; }
+.downloads a:hover [data-logo], .downloads button:hover [data-logo] { transform: rotate(180deg) scale(1.1); color: var(--dourado-claro); }
+.downloads a:hover i, .downloads button:hover i { color: var(--salvia); }
 
 /* ---------- finale ---------- */
 .finale { min-height: 100vh; overflow: hidden; display: flex; flex-direction: column; justify-content: center; color: var(--mineral); background: var(--mata); }

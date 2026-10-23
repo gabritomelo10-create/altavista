@@ -529,7 +529,14 @@ addEventListener('keydown', (e) => e.key === 'Escape' && closeLb());
    Finale + downloads
 ------------------------------------------------------------------- */
 gsap.from('.finale__sign', { opacity: 0, y: 40, duration: 1.6, ease: 'expo.out', scrollTrigger: { trigger: '.finale__sign', start: 'top 90%', once: true } });
-gsap.from('.downloads a', { y: 30, opacity: 0, duration: 1, stagger: 0.06, ease: 'expo.out', scrollTrigger: { trigger: '.downloads', start: 'top 90%', once: true } });
+gsap.from('.downloads > *', { y: 30, opacity: 0, duration: 1, stagger: 0.06, ease: 'expo.out', scrollTrigger: { trigger: '.downloads', start: 'top 90%', once: true } });
+
+// copiar SVG oficial (o download direto é bloqueado em alguns visualizadores)
+$$('[data-copy-svg]').forEach((b) => b.addEventListener('click', async () => {
+  const code = LOGOS[b.dataset.copySvg]().replace(/fill="currentColor"/g, 'fill="#193C30"');
+  try { await navigator.clipboard.writeText(code); showToast(`<i style="background:#193C30"></i>SVG copiado: ${b.textContent.replace('Copiar SVG', '').trim()}`); }
+  catch { showToast('Não foi possível copiar. Os arquivos estão em assets/brand no repositório.'); }
+}));
 
 /* ------------------------------------------------------------------
    Estúdio 3D (carregado sob demanda)

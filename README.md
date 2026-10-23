@@ -29,7 +29,7 @@ Funciona como site estático em qualquer hospedagem (GitHub Pages, Netlify, Verc
 | Tapume 3D | Os painéis da campanha se abrem como dominó durante a rolagem |
 | Instagram / stories | Tablet e celular em CSS 3D que reagem ao mouse |
 | Galeria | Os mockups do guia em rolagem horizontal com paralaxe interna e *lightbox* |
-| Arquivos | Downloads em SVG do logo (vertical, horizontal, símbolo) e do P01 |
+| Arquivos | Botões que copiam o SVG oficial do logo (vertical, horizontal, símbolo) e do P01; os arquivos ficam em `assets/brand/` |
 
 A página respeita `prefers-reduced-motion`, que desativa a rolagem suave e as animações longas.
 
