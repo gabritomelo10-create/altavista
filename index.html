@@ -1,0 +1,662 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Alta Vista Residence — Identidade Visual</title>
+  <meta name="description" content="Apresentação interativa da identidade visual do Alta Vista Residence: essência, símbolo, cores, tipografia, linguagem visual e aplicações.">
+  <meta name="theme-color" content="#193C30">
+  <link rel="icon" href="assets/brand/symbol.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600&family=Marcellus&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script type="importmap">
+    { "imports": { "three": "./assets/vendor/three/three.module.min.js", "three/addons/": "./assets/vendor/three/addons/" } }
+  </script>
+</head>
+<body class="is-loading">
+
+  <!-- ============ LOADER: o símbolo se desenha ============ -->
+  <div class="loader" id="loader" aria-hidden="true">
+    <div class="loader__mark" data-logo="symbol-draw"></div>
+    <div class="loader__count"><span id="loaderCount">0</span>%</div>
+  </div>
+
+  <div class="grain" aria-hidden="true"></div>
+  <div class="cursor" aria-hidden="true"><span class="cursor__dot"></span><span class="cursor__ring"><em class="cursor__label"></em></span></div>
+  <div class="progress" aria-hidden="true"><span></span></div>
+
+  <!-- ============ NAV ============ -->
+  <header class="nav">
+    <a href="#inicio" class="nav__brand" aria-label="Alta Vista Residence — início"><span data-logo="horizontal"></span></a>
+    <nav class="nav__links" aria-label="Capítulos">
+      <a href="#essencia" data-cursor="ir"><i>01</i> Essência</a>
+      <a href="#simbolo" data-cursor="ir"><i>02</i> Logo</a>
+      <a href="#cores" data-cursor="ir"><i>03</i> Cores</a>
+      <a href="#tipografia" data-cursor="ir"><i>04</i> Tipografia</a>
+      <a href="#linguagem" data-cursor="ir"><i>05</i> Linguagem</a>
+      <a href="#aplicacoes" data-cursor="ir"><i>06</i> Aplicações</a>
+    </nav>
+    <button class="nav__menu" aria-label="Abrir menu" aria-expanded="false"><span></span><span></span></button>
+  </header>
+
+  <main id="smooth">
+
+    <!-- ============ HERO 3D ============ -->
+    <section class="hero" id="inicio">
+      <canvas class="hero__canvas" id="heroCanvas" aria-hidden="true"></canvas>
+      <div class="hero__light" aria-hidden="true"></div>
+      <div class="hero__content">
+        <p class="eyebrow reveal-up">Alta Vista Residence · Guia de Identidade Visual</p>
+        <h1 class="hero__title" data-split>Mais espaço para estar presente.</h1>
+        <p class="hero__sub reveal-up">Essência, expressão e consistência — uma marca construída a partir do lago, das margens e da vida em família.</p>
+      </div>
+      <div class="hero__hint">
+        <span>Mova o mouse · clique no símbolo</span>
+        <span class="hero__scroll"><i></i>Role para explorar</span>
+      </div>
+      <div class="hero__meta"><span>Edição 01</span><span>Outubro 2026</span></div>
+    </section>
+
+    <!-- ============ MANIFESTO ============ -->
+    <section class="manifesto section--mineral" id="percurso">
+      <div class="wrap">
+        <p class="eyebrow">Percurso</p>
+        <h2 class="manifesto__title" data-split>Uma marca para acolher a vida.</h2>
+        <p class="manifesto__text" data-words>Este guia reúne a essência e o sistema visual do Alta Vista Residence. Sua função é orientar uma comunicação reconhecível, elegante e próxima das famílias que buscam uma rotina com mais espaço e tranquilidade.</p>
+        <ol class="chapters">
+          <li><a href="#essencia" data-cursor="ver"><i>01</i><span>Essência</span><b>Propósito, promessa e personalidade</b></a></li>
+          <li><a href="#simbolo" data-cursor="ver"><i>02</i><span>Sistema de logo</span><b>Símbolo, versões e proteção</b></a></li>
+          <li><a href="#cores" data-cursor="ver"><i>03</i><span>Cores e materialidade</span><b>Verdes, dourados e acabamentos</b></a></li>
+          <li><a href="#tipografia" data-cursor="ver"><i>04</i><span>Tipografia</span><b>Marcellus + DM Sans</b></a></li>
+          <li><a href="#linguagem" data-cursor="ver"><i>05</i><span>Linguagem visual</span><b>P01 · Margens ampliadas</b></a></li>
+          <li><a href="#aplicacoes" data-cursor="ver"><i>06</i><span>Aplicações</span><b>Mockups em 3D e campanha</b></a></li>
+        </ol>
+      </div>
+    </section>
+
+    <!-- ============ 01 ESSÊNCIA ============ -->
+    <section class="chapter-cover" id="essencia">
+      <div class="parallax-media" data-parallax="0.25"><img src="assets/img/familia-gramado.webp" alt="Família sentada no gramado, sorrindo, cercada por vegetação tropical" loading="lazy"></div>
+      <div class="chapter-cover__shade"></div>
+      <div class="wrap chapter-cover__content">
+        <p class="eyebrow eyebrow--gold">01 / Alta Vista Residence</p>
+        <h2 class="display" data-split>Espaço para a vida em família.</h2>
+        <p class="lead reveal-up">A casa faz parte de uma escolha maior: como queremos viver o tempo que compartilhamos.</p>
+      </div>
+    </section>
+
+    <section class="essence section--mineral">
+      <div class="wrap">
+        <p class="eyebrow">Essência</p>
+        <h2 class="h2" data-split>Mais espaço para estar presente.</h2>
+        <p class="lead lead--dark reveal-up">O Alta Vista Residence se dirige a famílias com filhos que desejam conforto, privacidade e uma relação mais tranquila com o cotidiano. A natureza é parte central dessa experiência e da forma como a marca se apresenta.</p>
+        <div class="pillars3">
+          <article class="tilt-card" data-tilt>
+            <span class="tilt-card__num">I</span>
+            <h3>Propósito</h3>
+            <p>Criar condições para que as famílias vivam melhor o tempo que compartilham.</p>
+            <span class="tilt-card__glare"></span>
+          </article>
+          <article class="tilt-card" data-tilt>
+            <span class="tilt-card__num">II</span>
+            <h3>Promessa</h3>
+            <p>Um lugar pensado para acolher uma rotina familiar mais tranquila.</p>
+            <span class="tilt-card__glare"></span>
+          </article>
+          <article class="tilt-card" data-tilt>
+            <span class="tilt-card__num">III</span>
+            <h3>Personalidade</h3>
+            <p>Acolhedora, serena, elegante, cuidadosa e discreta.</p>
+            <span class="tilt-card__glare"></span>
+          </article>
+        </div>
+        <p class="note">A frase de campanha traduz a direção criativa. Não integra o lettering da logo e não precisa estar presente em todas as peças.</p>
+      </div>
+    </section>
+
+    <!-- Nome e posicionamento -->
+    <section class="naming section--salvia">
+      <div class="naming__words" aria-hidden="true">
+        <span class="naming__big" data-drift="-1">Alta</span>
+        <span class="naming__big naming__big--r" data-drift="1">Vista</span>
+      </div>
+      <div class="wrap">
+        <p class="eyebrow eyebrow--gold-dark">Nome e posicionamento</p>
+        <h2 class="h2" data-split>Uma nova perspectiva de morar.</h2>
+        <div class="naming__split">
+          <p class="reveal-up"><strong>Alta</strong> expressa uma expectativa elevada de conforto e cuidado.</p>
+          <p class="reveal-up"><strong>Vista</strong> convida a imaginar outra perspectiva para o cotidiano.</p>
+        </div>
+        <div class="values">
+          <div class="value" data-cursor="">
+            <svg viewBox="0 0 64 64" class="icon"><circle cx="32" cy="32" r="31"/><circle cx="22" cy="24" r="7"/><circle cx="42" cy="24" r="7"/><path d="M13 45h39"/></svg>
+            <h3>Família</h3><p>Presença, convivência e acolhimento.</p>
+          </div>
+          <div class="value">
+            <svg viewBox="0 0 64 64" class="icon"><circle cx="32" cy="32" r="31"/><path d="M45 21c-11-3-27 5-27 28 21 1 27-16 27-28z"/><path d="M18 49l27-28"/></svg>
+            <h3>Amplitude</h3><p>Espaço para construir uma casa adequada à vida da família.</p>
+          </div>
+          <div class="value">
+            <svg viewBox="0 0 64 64" class="icon"><circle cx="32" cy="32" r="31"/><path d="M15 25c9-4 26 4 36 0"/><path d="M8 36c16-4 33 4 50 0"/><path d="M16 47c8-4 25 4 34 0"/></svg>
+            <h3>Natureza</h3><p>O lago preservado como presença e identidade da paisagem.</p>
+          </div>
+          <div class="value">
+            <svg viewBox="0 0 64 64" class="icon"><circle cx="32" cy="32" r="31"/><circle cx="34" cy="16" r="5"/><path d="M33 22l-9 13"/><path d="M24 35l16 7"/><path d="M24 35l-9 12"/><path d="M29 27h17"/></svg>
+            <h3>Tranquilidade</h3><p>Conforto, privacidade e estrutura de condomínio fechado.</p>
+          </div>
+        </div>
+        <p class="note note--dark">Esta é uma interpretação de marca; o nome não pressupõe altitude ou vista panorâmica do terreno. Alta Vista Residence é a marca do empreendimento; o endosso institucional da incorporadora permanece secundário.</p>
+      </div>
+    </section>
+
+    <!-- Linguagem verbal -->
+    <section class="verbal section--mata">
+      <div class="marquee" aria-hidden="true">
+        <div class="marquee__track">
+          <span>Mais espaço para estar presente.</span><span class="marquee__sym" data-logo="symbol"></span>
+          <span>Espaço para a vida em família.</span><span class="marquee__sym" data-logo="symbol"></span>
+          <span>Um convite para imaginar novos dias.</span><span class="marquee__sym" data-logo="symbol"></span>
+        </div>
+      </div>
+      <div class="wrap verbal__grid">
+        <div>
+          <p class="eyebrow eyebrow--gold">Linguagem verbal</p>
+          <h2 class="h2 h2--light" data-split>Próxima, clara e sem excessos.</h2>
+          <p class="lead reveal-up">A marca fala com famílias sobre a experiência de morar. Prefere cenas e benefícios concretos a expressões genéricas de luxo. O tom transmite cuidado e segurança, com linguagem simples.</p>
+        </div>
+        <div class="verbal__lists">
+          <div class="verbal__col">
+            <h3>Como falar</h3>
+            <ul class="quotes">
+              <li data-cursor="">“Mais espaço para estar presente.”</li>
+              <li>“Espaço para a vida em família.”</li>
+              <li>“Um convite para imaginar novos dias.”</li>
+            </ul>
+          </div>
+          <div class="verbal__col">
+            <h3>Como sustentar</h3>
+            <ul class="checks">
+              <li>Relacionar mensagens a atributos confirmados.</li>
+              <li>Mostrar convivência e natureza com sobriedade.</li>
+              <li>Dar espaço às imagens e evitar promessas absolutas.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <p class="wrap note note--light">“Segurança total”, “silêncio absoluto”, áreas, preços e atividades no lago só podem aparecer quando houver fundamento e validação específicos.</p>
+    </section>
+
+    <!-- ============ 02 SÍMBOLO ============ -->
+    <section class="chapter-cover chapter-cover--lake" id="simbolo">
+      <div class="parallax-media" data-parallax="0.3"><img src="assets/img/lago.webp" alt="Lago ao amanhecer cercado por mata, com névoa sobre a água" loading="lazy"></div>
+      <div class="chapter-cover__shade"></div>
+      <div class="wrap chapter-cover__content">
+        <p class="eyebrow eyebrow--gold">02 / Alta Vista Residence</p>
+        <h2 class="display" data-split>O lugar ganha uma assinatura.</h2>
+        <p class="lead reveal-up">Margens, água e pertencimento se encontram em um símbolo orgânico com presença própria.</p>
+      </div>
+    </section>
+
+    <!-- Construção do símbolo (pinned) -->
+    <section class="build section--mineral" id="construcao">
+      <div class="build__pin">
+        <div class="build__stage">
+          <div class="build__grid" aria-hidden="true"></div>
+          <div class="build__logo" id="buildLogo" aria-label="Construção da assinatura Alta Vista Residence" role="img"></div>
+        </div>
+        <div class="build__copy">
+          <p class="eyebrow">Conceito do símbolo</p>
+          <h2 class="h2">A natureza ocupa o centro.</h2>
+          <ol class="build__steps">
+            <li class="is-active"><i>01</i><div><b>O lago</b><span>O vazio central pode ser lido como o lago.</span></div></li>
+            <li><i>02</i><div><b>As margens</b><span>Os contornos ao redor evocam suas margens e o território que o acolhe.</span></div></li>
+            <li><i>03</i><div><b>O selo</b><span>A forma de selo sugere pertencimento, cuidado e unidade.</span></div></li>
+            <li><i>04</i><div><b>O lettering</b><span>O lettering serifado acrescenta presença e elegância; as curvas dos A dialogam com a linguagem orgânica do símbolo.</span></div></li>
+          </ol>
+          <div class="build__bar"><span></span></div>
+        </div>
+        <p class="note build__note">Leitura conceitual do desenho. O emblema não representa um levantamento topográfico nem o contorno geográfico real do lago.</p>
+      </div>
+    </section>
+
+    <!-- Versões -->
+    <section class="versions section--mineral" id="versoes">
+      <div class="wrap">
+        <p class="eyebrow">Versões</p>
+        <h2 class="h2" data-split>Uma identidade, diferentes espaços.</h2>
+        <div class="versions__tabs" role="tablist">
+          <button role="tab" class="is-active" data-version="vertical" data-cursor="">Vertical</button>
+          <button role="tab" data-version="horizontal">Horizontal</button>
+          <button role="tab" data-version="symbol">Símbolo isolado</button>
+        </div>
+        <div class="versions__stage" data-cursor="proteção">
+          <div class="versions__clear" aria-hidden="true"><i>x</i><i>x</i><i>x</i><i>x</i></div>
+          <div class="versions__logo is-active" data-version-panel="vertical"><span data-logo="vertical"></span></div>
+          <div class="versions__logo" data-version-panel="horizontal"><span data-logo="horizontal"></span></div>
+          <div class="versions__logo" data-version-panel="symbol"><span data-logo="symbol"></span></div>
+          <p class="versions__hint">Passe o mouse para ver a área de proteção</p>
+        </div>
+        <div class="versions__info">
+          <div><h3>Proteção</h3><p>Definir <em>x</em> como um quarto da largura do símbolo. Manter ao menos <em>x</em> de espaço livre ao redor da assinatura, sem texto, imagens ou grafismos concorrentes.</p></div>
+          <div><h3>Uso</h3><p data-version-copy>A expressão completa da marca. O símbolo, o nome e o descritor mantêm suas relações de proporção e alinhamento.</p></div>
+        </div>
+
+        <div class="reduction">
+          <div class="reduction__head">
+            <h3>Redução</h3>
+            <p>Arraste para testar o tamanho mínimo. Em aplicações muito pequenas, preferir o símbolo isolado em uma cor.</p>
+          </div>
+          <input type="range" min="24" max="420" value="320" id="reductionRange" aria-label="Largura do logo em pixels" data-cursor="arraste">
+          <div class="reduction__stage">
+            <div class="reduction__logo" id="reductionLogo"><span data-logo="vertical"></span></div>
+          </div>
+          <div class="reduction__readout"><b id="reductionPx">320 px</b><span id="reductionVerdict">Vertical — legível (mín. 320 px / 60 mm)</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Fundos -->
+    <section class="backgrounds section--mineral" id="fundos">
+      <div class="wrap">
+        <p class="eyebrow">Fundos</p>
+        <h2 class="h2" data-split>Contraste com a mesma personalidade.</h2>
+        <div class="bg-switch">
+          <div class="bg-switch__stage" id="bgStage" data-bg="mineral">
+            <div class="bg-switch__light" aria-hidden="true"></div>
+            <span data-logo="horizontal" class="bg-switch__logo"></span>
+          </div>
+          <div class="bg-switch__opts" role="radiogroup" aria-label="Combinação de fundo">
+            <button role="radio" aria-checked="true" class="is-active" data-bg="mineral"><i style="--a:#E8E3D5;--b:#193C30"></i>Mata sobre Mineral</button>
+            <button role="radio" aria-checked="false" data-bg="mata"><i style="--a:#193C30;--b:#E8E3D5"></i>Mineral sobre Mata</button>
+            <button role="radio" aria-checked="false" data-bg="salvia"><i style="--a:#A0AD91;--b:#193C30"></i>Mata sobre Sálvia</button>
+            <button role="radio" aria-checked="false" data-bg="dourado"><i style="--a:#193C30;--b:#B79A58"></i>Dourado sobre Mata</button>
+          </div>
+        </div>
+        <p class="note">Sobre fotografias, escolher uma área calma e contraste suficiente ou criar uma superfície de apoio. Evitar a assinatura sobre detalhes de alto contraste.</p>
+
+        <h3 class="h3 misuse__title">Preservar o desenho é preservar a marca.</h3>
+        <div class="misuse">
+          <figure class="misuse__card" data-cursor="virar"><div class="misuse__inner">
+            <div class="misuse__front"><span data-logo="horizontal" class="mis mis--squash"></span></div>
+            <div class="misuse__back"><span data-logo="horizontal"></span><b>Correto</b></div></div>
+            <figcaption>Não achatar</figcaption></figure>
+          <figure class="misuse__card" data-cursor="virar"><div class="misuse__inner">
+            <div class="misuse__front"><span data-logo="horizontal" class="mis mis--rotate"></span></div>
+            <div class="misuse__back"><span data-logo="horizontal"></span><b>Correto</b></div></div>
+            <figcaption>Não girar</figcaption></figure>
+          <figure class="misuse__card" data-cursor="virar"><div class="misuse__inner">
+            <div class="misuse__front"><span data-logo="horizontal" class="mis mis--color"></span></div>
+            <div class="misuse__back"><span data-logo="horizontal"></span><b>Correto</b></div></div>
+            <figcaption>Não inventar cores</figcaption></figure>
+          <figure class="misuse__card" data-cursor="virar"><div class="misuse__inner">
+            <div class="misuse__front"><span data-logo="horizontal" class="mis mis--shadow"></span></div>
+            <div class="misuse__back"><span data-logo="horizontal"></span><b>Correto</b></div></div>
+            <figcaption>Não aplicar sombra</figcaption></figure>
+          <figure class="misuse__card" data-cursor="virar"><div class="misuse__inner">
+            <div class="misuse__front"><span class="mis--font"><span data-logo="symbol"></span><b>ALTA VISTA</b></span></div>
+            <div class="misuse__back"><span data-logo="horizontal"></span><b>Correto</b></div></div>
+            <figcaption>Não trocar o lettering</figcaption></figure>
+          <figure class="misuse__card" data-cursor="virar"><div class="misuse__inner">
+            <div class="misuse__front mis--p01"><span data-logo="p01" class="mis--p01__bg"></span><span data-logo="horizontal"></span></div>
+            <div class="misuse__back"><span data-logo="horizontal"></span><b>Correto</b></div></div>
+            <figcaption>Não misturar com o P01</figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 03 CORES ============ -->
+    <section class="chapter-cover chapter-cover--stone" id="cores">
+      <div class="parallax-media" data-parallax="0.25"><img src="assets/img/pedra-dourado.webp" alt="Pedra travertino, perfil dourado escovado e tecido verde sob luz suave" loading="lazy"></div>
+      <div class="chapter-cover__shade chapter-cover__shade--side"></div>
+      <div class="wrap chapter-cover__content">
+        <p class="eyebrow eyebrow--gold">03 / Alta Vista Residence</p>
+        <h2 class="display" data-split>Verdes que acolhem. Dourado que valoriza.</h2>
+        <p class="lead reveal-up">A natureza constrói a base cromática. O dourado aparece como detalhe de elegância e acabamento.</p>
+      </div>
+    </section>
+
+    <section class="palette section--mineral">
+      <div class="wrap">
+        <p class="eyebrow">Paleta</p>
+        <h2 class="h2" data-split>Cor com função e hierarquia.</h2>
+        <p class="palette__hint">Passe o mouse para expandir · clique para copiar o HEX</p>
+      </div>
+      <div class="swatches" id="swatches">
+        <button class="swatch" style="--c:#193C30;--t:#E8E3D5" data-hex="#193C30"><span class="swatch__name">Mata</span><span class="swatch__data"><b>#193C30</b>RGB 25, 60, 48<br>CMYK 58, 0, 20, 76</span><span class="swatch__role">Base principal · presença</span></button>
+        <button class="swatch" style="--c:#284B3B;--t:#E8E3D5" data-hex="#284B3B"><span class="swatch__name">Floresta</span><span class="swatch__data"><b>#284B3B</b>RGB 40, 75, 59<br>CMYK 47, 0, 21, 71</span><span class="swatch__role">Profundidade · apoio</span></button>
+        <button class="swatch" style="--c:#667451;--t:#E8E3D5" data-hex="#667451"><span class="swatch__name">Oliva</span><span class="swatch__data"><b>#667451</b>RGB 102, 116, 81<br>CMYK 12, 0, 30, 55</span><span class="swatch__role">Calma · acolhimento</span></button>
+        <button class="swatch" style="--c:#A0AD91;--t:#193C30" data-hex="#A0AD91"><span class="swatch__name">Sálvia</span><span class="swatch__data"><b>#A0AD91</b>RGB 160, 173, 145<br>CMYK 8, 0, 16, 32</span><span class="swatch__role">Natureza próxima · P01</span></button>
+        <button class="swatch swatch--metal" style="--c:#B79A58;--t:#193C30" data-hex="#B79A58"><span class="swatch__name">Dourado</span><span class="swatch__data"><b>#B79A58</b>RGB 183, 154, 88<br>CMYK 0, 16, 52, 28</span><span class="swatch__role">Acento · acabamento</span></button>
+        <button class="swatch swatch--metal" style="--c:#D7C18C;--t:#193C30" data-hex="#D7C18C"><span class="swatch__name">Dourado claro</span><span class="swatch__data"><b>#D7C18C</b>RGB 215, 193, 140<br>CMYK 0, 10, 35, 16</span><span class="swatch__role">Destaque sobre Mata</span></button>
+        <button class="swatch" style="--c:#E8E3D5;--t:#193C30" data-hex="#E8E3D5"><span class="swatch__name">Mineral</span><span class="swatch__data"><b>#E8E3D5</b>RGB 232, 227, 213<br>CMYK 0, 2, 8, 9</span><span class="swatch__role">Leitura e clareza</span></button>
+      </div>
+      <div class="wrap">
+        <p class="note">*CMYK de referência, obtido por conversão matemática. Ajustar ao perfil, papel e processo da gráfica; não equivale a uma especificação Pantone.</p>
+        <h3 class="h3">Variar o fundo, manter a coerência.</h3>
+        <div class="combos">
+          <div class="combo" style="--bg:#E8E3D5;--fg:#193C30" data-tilt><h4>Leitura e clareza</h4><p>Alta Vista Residence</p><span class="tilt-card__glare"></span></div>
+          <div class="combo" style="--bg:#A0AD91;--fg:#193C30" data-tilt><h4>Natureza próxima</h4><p>Alta Vista Residence</p><span class="tilt-card__glare"></span></div>
+          <div class="combo" style="--bg:#193C30;--fg:#D7C18C" data-tilt><h4>Presença e refinamento</h4><p>Alta Vista Residence</p><span class="tilt-card__glare"></span></div>
+          <div class="combo" style="--bg:#667451;--fg:#E8E3D5" data-tilt><h4>Calma e acolhimento</h4><p>Alta Vista Residence</p><span class="tilt-card__glare"></span></div>
+        </div>
+        <p class="note">Priorizar texto Mata sobre Mineral ou Sálvia. Usar dourado como acento; evitar dourado claro em textos pequenos sobre fundos claros.</p>
+      </div>
+    </section>
+
+    <!-- Materialidade -->
+    <section class="material section--mata">
+      <div class="wrap material__grid">
+        <figure class="material__media" data-tilt data-cursor="ampliar" data-lightbox="assets/img/mockup-materialidade.webp">
+          <div class="parallax-inner"><img src="assets/img/mockup-materialidade.webp" alt="Caixa, pasta e envelope com a marca Alta Vista em papel texturizado e foil dourado" loading="lazy"></div>
+          <span class="tilt-card__glare"></span>
+        </figure>
+        <div class="material__copy">
+          <p class="eyebrow eyebrow--gold">Materialidade</p>
+          <h2 class="h2 h2--light" data-split>O refinamento aparece no cuidado.</h2>
+          <div class="material__item reveal-up">
+            <h3><span class="gold-text">Dourado</span></h3>
+            <p>Preferir acabamento acetinado ou escovado. Em papel, avaliar foil; em metal, conferir liga e acabamento por amostra física.</p>
+          </div>
+          <div class="material__item reveal-up">
+            <h3>Base natural</h3>
+            <p>Papéis texturizados, tecidos, madeira e pedra reforçam o caráter acolhedor. O material deve preservar as linhas e os vazios do selo.</p>
+          </div>
+          <p class="note note--light">Os códigos digitais simulam cor plana. Selecionar tinta especial ou referência de fornecedor com prova no material; não assumir equivalência metálica por HEX.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 04 TIPOGRAFIA ============ -->
+    <section class="chapter-cover chapter-cover--stone" id="tipografia">
+      <div class="parallax-media" data-parallax="0.25"><img src="assets/img/pedra-dourado.webp" alt="" loading="lazy" style="object-position: 70% 50%"></div>
+      <div class="chapter-cover__shade chapter-cover__shade--side"></div>
+      <div class="wrap chapter-cover__content">
+        <p class="eyebrow eyebrow--gold">04 / Alta Vista Residence</p>
+        <h2 class="display" data-split>Palavras com presença e clareza.</h2>
+        <p class="lead reveal-up">Marcellus dá voz aos títulos. DM Sans organiza as informações e aproxima a comunicação do cotidiano.</p>
+      </div>
+    </section>
+
+    <section class="type section--mineral">
+      <div class="wrap">
+        <p class="eyebrow">Fontes da marca</p>
+        <div class="type__duo">
+          <div class="type__specimen" data-cursor="">
+            <span class="type__aa type__aa--serif">Aa</span>
+            <div><h3>Marcellus Regular</h3><p>Títulos e chamadas · peso 400</p></div>
+          </div>
+          <div class="type__specimen">
+            <span class="type__aa type__aa--sans">Aa</span>
+            <div><h3 style="font-family:var(--sans)">DM Sans Regular / Semibold</h3><p>Textos, informações e interfaces · pesos 400 e 600</p></div>
+          </div>
+        </div>
+
+        <div class="tester">
+          <div class="tester__controls">
+            <div class="seg" role="radiogroup" aria-label="Fonte">
+              <button class="is-active" data-font="serif" role="radio" aria-checked="true">Marcellus</button>
+              <button data-font="sans" role="radio" aria-checked="false">DM Sans</button>
+              <button data-font="sans-semi" role="radio" aria-checked="false">DM Sans 600</button>
+            </div>
+            <label class="tester__size">Tamanho <input type="range" min="16" max="140" value="72" id="typeSize" data-cursor="arraste"><output id="typeSizeOut">72 px</output></label>
+          </div>
+          <p class="tester__text" id="typeTester" contenteditable="true" spellcheck="false" data-cursor="digite">Mais espaço para estar presente.</p>
+          <p class="tester__glyphs">Á À Â Ã É Ê Í Ó Ô Õ Ú Ü Ç / á à â ã é ê í ó ô õ ú ü ç / 0123456789</p>
+        </div>
+
+        <div class="hierarchy">
+          <div class="hierarchy__sample">
+            <p class="hz hz--t" data-split>Mais espaço. Mais natureza.</p>
+            <p class="hz hz--s reveal-up">Um lugar para a vida em família.</p>
+            <p class="hz hz--b reveal-up">A marca apresenta o empreendimento com proximidade e sobriedade. Manter parágrafos curtos, alinhamento à esquerda e áreas de respiro entre texto, imagem e assinatura.</p>
+            <p class="hz hz--c reveal-up">Informação de apoio / legenda</p>
+          </div>
+          <ul class="hierarchy__spec">
+            <li><b>Títulos</b><span>48–64 px · entrelinha 105–115%</span></li>
+            <li><b>Subtítulos</b><span>24–28 px · 125–140%</span></li>
+            <li><b>Corpo</b><span>16–18 px · 145–160%</span></li>
+            <li><b>Legendas</b><span>13–14 px · 140%</span></li>
+          </ul>
+        </div>
+        <p class="note">Usar no máximo duas famílias; evitar textos longos em caixa-alta. Não usar falso negrito nem comprimir as letras. Contingência: Georgia + Arial. As fontes de comunicação não substituem o lettering da logo.</p>
+      </div>
+    </section>
+
+    <!-- ============ 05 LINGUAGEM VISUAL ============ -->
+    <section class="chapter-cover" id="linguagem">
+      <div class="parallax-media" data-parallax="0.3"><img src="assets/img/folhagem-margens.webp" alt="Folhas tropicais em sombra e luz" loading="lazy"></div>
+      <div class="chapter-cover__shade chapter-cover__shade--side"></div>
+      <div class="wrap chapter-cover__content">
+        <p class="eyebrow eyebrow--gold">05 / Alta Vista Residence</p>
+        <h2 class="display" data-split>As margens viram linguagem.</h2>
+        <p class="lead reveal-up">O P01 amplia os contornos do selo e leva sua personalidade para além da logo.</p>
+      </div>
+    </section>
+
+    <section class="p01 section--mineral" id="p01">
+      <div class="p01__pin">
+        <div class="p01__art" id="p01Art" aria-hidden="true"></div>
+        <div class="wrap p01__copy">
+          <p class="eyebrow">P01 / Margens ampliadas</p>
+          <h2 class="h2" data-split>Um gesto amplo, com espaço para respirar.</h2>
+          <p class="lead lead--dark reveal-up">O recorte preserva a origem orgânica do símbolo. As faixas entram e saem do enquadramento, criando profundidade e uma área livre para a informação.</p>
+          <p class="note">P01 é o único elemento gráfico adotado. Não usar P02, tramas de selos ou novas ondas como substitutos.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="compose section--mineral">
+      <div class="wrap">
+        <p class="eyebrow">Composição</p>
+        <h2 class="h2" data-split>Logo e P01: protagonismos diferentes.</h2>
+        <div class="compose__grid">
+          <figure class="compose__card" data-tilt>
+            <div class="compose__art compose__art--a"><span data-logo="horizontal" class="compose__logo"></span><span data-logo="p01" class="compose__p01"></span></div>
+            <figcaption><b>Recorte amplo</b>Ampliar proporcionalmente e recortar pelas bordas.</figcaption>
+          </figure>
+          <figure class="compose__card" data-tilt>
+            <div class="compose__art compose__art--b"><p>Mais espaço.<br>Mais natureza.</p><span data-logo="p01" class="compose__p01"></span></div>
+            <figcaption><b>Contraste discreto</b>Manter as faixas separadas e o texto legível.</figcaption>
+          </figure>
+          <figure class="compose__card" data-tilt>
+            <div class="compose__art compose__art--c"><span data-logo="horizontal" class="compose__logo"></span><span data-logo="p01" class="compose__p01"></span></div>
+            <figcaption><b>Respiro protegido</b>Não colocar o grafismo sobre a assinatura.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- Fotografia e ícones -->
+    <section class="photo section--mineral">
+      <div class="wrap photo__grid">
+        <figure class="photo__media" data-tilt data-cursor="ampliar" data-lightbox="assets/img/familia-gramado.webp">
+          <div class="parallax-inner"><img src="assets/img/familia-gramado.webp" alt="Família com dois filhos sentada no gramado em luz de fim de tarde" loading="lazy"></div>
+          <span class="tilt-card__glare"></span>
+        </figure>
+        <div>
+          <p class="eyebrow">Fotografia e ícones</p>
+          <h2 class="h2" data-split>Vida cotidiana, natureza e cuidado.</h2>
+          <h3 class="h3s">Direção de imagem</h3>
+          <p class="reveal-up">Famílias com filhos em momentos naturais. Luz suave, enquadramentos próximos e paisagem tropical plana. Tratamento quente e verde moderado, com pele natural.</p>
+          <h3 class="h3s">Ícones</h3>
+          <p class="reveal-up">Traço simples, terminais suaves e uma cor. Representar apenas atributos confirmados. Evitar ícones decorativos sem função.</p>
+          <div class="icons-row">
+            <svg viewBox="0 0 64 64" class="icon icon--lg"><circle cx="32" cy="32" r="31"/><circle cx="22" cy="24" r="7"/><circle cx="42" cy="24" r="7"/><path d="M13 45h39"/></svg>
+            <svg viewBox="0 0 64 64" class="icon icon--lg"><circle cx="32" cy="32" r="31"/><path d="M45 21c-11-3-27 5-27 28 21 1 27-16 27-28z"/><path d="M18 49l27-28"/></svg>
+            <svg viewBox="0 0 64 64" class="icon icon--lg"><circle cx="32" cy="32" r="31"/><path d="M15 25c9-4 26 4 36 0"/><path d="M8 36c16-4 33 4 50 0"/><path d="M16 47c8-4 25 4 34 0"/></svg>
+            <svg viewBox="0 0 64 64" class="icon icon--lg"><circle cx="32" cy="32" r="31"/><circle cx="34" cy="16" r="5"/><path d="M33 22l-9 13"/><path d="M24 35l16 7"/><path d="M24 35l-9 12"/><path d="M29 27h17"/></svg>
+          </div>
+          <p class="note">As imagens deste guia são ilustrativas. Fotografias de comercialização devem ser compatíveis com a paisagem e os atributos reais do projeto.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ 06 APLICAÇÕES ============ -->
+    <section class="chapter-cover" id="aplicacoes">
+      <div class="parallax-media" data-parallax="0.25"><img src="assets/img/familia-caminhando.webp" alt="Família caminhando de mãos dadas por um gramado sob árvores ao pôr do sol" loading="lazy"></div>
+      <div class="chapter-cover__shade"></div>
+      <div class="wrap chapter-cover__content">
+        <p class="eyebrow eyebrow--gold">06 / Alta Vista Residence</p>
+        <h2 class="display" data-split>A marca encontra a vida real.</h2>
+        <p class="lead reveal-up">A mesma identidade se adapta ao espaço urbano, ao contato comercial e ao cotidiano das famílias.</p>
+      </div>
+    </section>
+
+    <!-- Estúdio 3D -->
+    <section class="studio" id="estudio">
+      <div class="studio__bg" aria-hidden="true"></div>
+      <canvas class="studio__canvas" id="studioCanvas" aria-label="Mockups 3D interativos da marca"></canvas>
+      <div class="studio__ui">
+        <div class="studio__head">
+          <p class="eyebrow eyebrow--gold">Estúdio 3D</p>
+          <h2 class="h2 h2--light">Mockups para girar, abrir e balançar.</h2>
+        </div>
+        <div class="studio__tabs" role="tablist" aria-label="Escolha o mockup">
+          <button class="is-active" data-item="0" role="tab">Letreiro</button>
+          <button data-item="1" role="tab">Garrafa</button>
+          <button data-item="2" role="tab">Caderno</button>
+          <button data-item="3" role="tab">Crachá</button>
+          <button data-item="4" role="tab">Convite</button>
+        </div>
+        <div class="studio__caption" id="studioCaption">
+          <b>Pavilhão de vendas</b>
+          <span>Símbolo e lettering em relevo dourado escovado, iluminação rasante sobre parede mineral.</span>
+        </div>
+        <p class="studio__hint">Arraste para girar · clique para interagir</p>
+      </div>
+      <div class="studio__fallback">Ative o WebGL para ver os mockups 3D.</div>
+    </section>
+
+    <!-- Tapume em 3D (CSS) -->
+    <section class="hoarding section--mineral" id="tapume">
+      <div class="hoarding__pin">
+        <div class="wrap hoarding__copy">
+          <p class="eyebrow">Campanha de tapume</p>
+          <h2 class="h2" data-split>Ritmo e leitura à distância.</h2>
+          <p class="reveal-up">A alternância entre imagem, assinatura e P01 cria ritmo e leitura à distância.</p>
+        </div>
+        <div class="hoarding__scene">
+          <div class="hoarding__wall" id="hoardingWall">
+            <div class="panel panel--mata"><span data-logo="vertical"></span></div>
+            <div class="panel panel--mineral"><span data-logo="p01" class="panel__p01"></span></div>
+            <div class="panel panel--photo"><img src="assets/img/familia-gramado.webp" alt="" loading="lazy"></div>
+            <div class="panel panel--salvia"><p>Mais espaço para estar presente.</p></div>
+            <div class="panel panel--mineral panel--flip"><span data-logo="p01" class="panel__p01"></span></div>
+            <div class="panel panel--photo"><img src="assets/img/familia-caminhando.webp" alt="" loading="lazy" style="object-position:80% 50%"></div>
+          </div>
+          <div class="hoarding__ground" aria-hidden="true"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Social em 3D (CSS) -->
+    <section class="social section--mata" id="social">
+      <div class="wrap social__grid">
+        <div class="social__copy">
+          <p class="eyebrow eyebrow--gold">Instagram e stories</p>
+          <h2 class="h2 h2--light" data-split>Uma composição que pode ser repetida.</h2>
+          <ol class="steps-list">
+            <li class="reveal-up">Uma mensagem principal por peça.</li>
+            <li class="reveal-up">Título em Marcellus; apoio em DM Sans.</li>
+            <li class="reveal-up">P01 nas bordas e em escala ampla.</li>
+            <li class="reveal-up">Assinatura com proteção e contraste.</li>
+            <li class="reveal-up">Fotografias de convivência e natureza, sem transformar ilustração em informação do projeto.</li>
+          </ol>
+        </div>
+        <div class="devices" id="devices" data-cursor="">
+          <div class="device device--tablet">
+            <div class="device__screen feed">
+              <div class="post post--mata"><span data-logo="vertical"></span></div>
+              <div class="post"><img src="assets/img/familia-caminhando.webp" alt="" loading="lazy" style="object-position:85% 60%"></div>
+              <div class="post post--mineral"><span data-logo="p01" class="post__p01"></span></div>
+              <div class="post"><img src="assets/img/familia-gramado.webp" alt="" loading="lazy" style="object-position:70% 40%"></div>
+              <div class="post post--oliva"><p>Mais espaço para estar presente.</p><i></i></div>
+              <div class="post"><img src="assets/img/lago.webp" alt="" loading="lazy"></div>
+              <div class="post post--mineral"><span data-logo="p01" class="post__p01 post__p01--b"></span></div>
+              <div class="post"><img src="assets/img/folhagem-capa.webp" alt="" loading="lazy" style="object-position:80% 50%"></div>
+              <div class="post post--mineral"><span data-logo="vertical" class="post__logo-dark"></span></div>
+            </div>
+          </div>
+          <div class="device device--phone">
+            <div class="device__screen story">
+              <span data-logo="vertical" class="story__logo"></span>
+              <div class="story__photo"><img src="assets/img/familia-caminhando.webp" alt="" loading="lazy"></div>
+              <p>Mais espaço para estar presente.</p><i></i>
+              <span data-logo="p01" class="story__p01"></span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Galeria de mockups do guia -->
+    <section class="gallery section--mineral" id="galeria">
+      <div class="gallery__pin">
+        <div class="gallery__head wrap">
+          <p class="eyebrow">Aplicações</p>
+          <h2 class="h2">Mockups da marca</h2>
+          <p class="gallery__count"><span id="galleryIndex">01</span> / 08</p>
+        </div>
+        <div class="gallery__track" id="galleryTrack">
+          <figure class="gcard" data-cursor="ampliar" data-lightbox="assets/img/mockup-tapume.webp"><div class="gcard__img"><img src="assets/img/mockup-tapume.webp" alt="Tapume com painéis da marca, P01, foto de família e frase de campanha" loading="lazy"></div><figcaption><b>Campanha de tapume</b><span>Imagem, assinatura e P01 em alternância.</span></figcaption></figure>
+          <figure class="gcard" data-cursor="ampliar" data-lightbox="assets/img/mockup-pavilhao.webp"><div class="gcard__img"><img src="assets/img/mockup-pavilhao.webp" alt="Recepção do pavilhão de vendas com logo dourado em relevo e P01 no vidro" loading="lazy"></div><figcaption><b>Pavilhão de vendas</b><span>Materiais naturais e P01 em escala arquitetônica.</span></figcaption></figure>
+          <figure class="gcard" data-cursor="ampliar" data-lightbox="assets/img/mockup-apresentacao.webp"><div class="gcard__img"><img src="assets/img/mockup-apresentacao.webp" alt="Livro de apresentação comercial com capa Mineral e P01 em Sálvia" loading="lazy"></div><figcaption><b>Apresentação comercial</b><span>Papel, recortes e acabamento táteis.</span></figcaption></figure>
+          <figure class="gcard" data-cursor="ampliar" data-lightbox="assets/img/mockup-instagram.webp"><div class="gcard__img"><img src="assets/img/mockup-instagram.webp" alt="Tablet e celular exibindo feed e story da marca" loading="lazy"></div><figcaption><b>Instagram e stories</b><span>Fundos, fotografia e grafismo alternados.</span></figcaption></figure>
+          <figure class="gcard" data-cursor="ampliar" data-lightbox="assets/img/mockup-convite.webp"><div class="gcard__img"><img src="assets/img/mockup-convite.webp" alt="Convite em papel com baixo-relevo do P01 e fita oliva" loading="lazy"></div><figcaption><b>Convite e relacionamento</b><span>Baixo-relevo e dourado pontual.</span></figcaption></figure>
+          <figure class="gcard" data-cursor="ampliar" data-lightbox="assets/img/mockup-objetos.webp"><div class="gcard__img"><img src="assets/img/mockup-objetos.webp" alt="Sacola de algodão, caderno, envelope e garrafa térmica com a marca" loading="lazy"></div><figcaption><b>Objetos e boas-vindas</b><span>Logo na peça principal, símbolo nos detalhes.</span></figcaption></figure>
+          <figure class="gcard" data-cursor="ampliar" data-lightbox="assets/img/mockup-uniformes.webp"><div class="gcard__img"><img src="assets/img/mockup-uniformes.webp" alt="Camisa polo, boné e crachá com a marca bordada e em foil" loading="lazy"></div><figcaption><b>Uniformes e identificação</b><span>Discrição também constrói presença.</span></figcaption></figure>
+          <figure class="gcard" data-cursor="ampliar" data-lightbox="assets/img/mockup-materialidade.webp"><div class="gcard__img"><img src="assets/img/mockup-materialidade.webp" alt="Caixa, pasta e envelope com acabamento em foil dourado" loading="lazy"></div><figcaption><b>Materialidade</b><span>Dourado acetinado sobre base natural.</span></figcaption></figure>
+        </div>
+      </div>
+    </section>
+
+    <!-- Arquivos -->
+    <section class="files section--mineral">
+      <div class="wrap">
+        <p class="eyebrow">Arquivos e produção</p>
+        <h2 class="h2" data-split>Consistência do arquivo à aplicação.</h2>
+        <p class="lead lead--dark reveal-up">O pacote de apoio reúne versões da marca em SVG e PNG, o elemento P01 editável, a paleta digital, fontes com licenças e os mockups usados neste guia.</p>
+        <div class="pillars3 pillars3--plain">
+          <div class="reveal-up"><h3>Marca</h3><p>Usar os arquivos em contornos fornecidos. Conferir a versão de cor, o formato e a área de proteção antes de diagramar.</p></div>
+          <div class="reveal-up"><h3>Produção</h3><p>Definir perfil de impressão, material e acabamento com o fornecedor. Validar espessuras e vazios por prova em escala real.</p></div>
+          <div class="reveal-up"><h3>Conteúdo</h3><p>Atualizar textos comerciais com informações confirmadas. Manter arquitetura, imagens ilustrativas e fotografias do projeto claramente distinguíveis.</p></div>
+        </div>
+        <div class="downloads">
+          <a href="assets/brand/logo-vertical.svg" download data-cursor="baixar"><span data-logo="symbol"></span>Assinatura vertical <i>SVG</i></a>
+          <a href="assets/brand/logo-horizontal.svg" download data-cursor="baixar"><span data-logo="symbol"></span>Assinatura horizontal <i>SVG</i></a>
+          <a href="assets/brand/symbol.svg" download data-cursor="baixar"><span data-logo="symbol"></span>Símbolo isolado <i>SVG</i></a>
+          <a href="assets/brand/p01.svg" download data-cursor="baixar"><span data-logo="symbol"></span>Grafismo P01 <i>SVG</i></a>
+          <a href="https://fonts.google.com/specimen/Marcellus" target="_blank" rel="noopener" data-cursor="abrir"><span data-logo="symbol"></span>Marcellus <i>Google Fonts</i></a>
+          <a href="https://fonts.google.com/specimen/DM+Sans" target="_blank" rel="noopener" data-cursor="abrir"><span data-logo="symbol"></span>DM Sans <i>Google Fonts</i></a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Fechamento -->
+    <section class="finale" id="fim">
+      <div class="parallax-media" data-parallax="0.2"><img src="assets/img/familia-gramado.webp" alt="" loading="lazy"></div>
+      <div class="chapter-cover__shade"></div>
+      <div class="wrap finale__content">
+        <p class="eyebrow eyebrow--gold">Mais espaço</p>
+        <h2 class="display" data-split>Para estar presente.</h2>
+        <div class="finale__sign"><span data-logo="horizontal"></span></div>
+      </div>
+      <footer class="footer wrap">
+        <span>Edição 01 · 22.10.2026</span>
+        <span>Imagens e mockups gerados por IA para demonstração; não representam a implantação real.</span>
+        <img src="assets/img/britto-group.png" alt="Britto Group" class="footer__britto">
+      </footer>
+    </section>
+  </main>
+
+  <div class="lightbox" id="lightbox" aria-hidden="true"><img alt=""><button aria-label="Fechar">×</button></div>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script src="assets/vendor/gsap.min.js"></script>
+  <script src="assets/vendor/ScrollTrigger.min.js"></script>
+  <script src="assets/vendor/lenis.min.js"></script>
+  <script type="module" src="assets/js/main.js"></script>
+</body>
+</html>
