@@ -2,6 +2,8 @@ import { VERTICAL, SYMBOL_VIEWBOX, HORIZONTAL, P01, AVRA } from './brand-paths.j
 
 const { gsap, ScrollTrigger, Lenis } = window;
 gsap.registerPlugin(ScrollTrigger);
+// evita saltos quando a barra de endereço do celular aparece/some
+ScrollTrigger.config({ ignoreMobileResize: true });
 document.documentElement.classList.add('js');
 
 const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -57,6 +59,8 @@ $$('a[href^="#"]').forEach((a) => {
     if (!target) return;
     e.preventDefault();
     $('.nav').classList.remove('is-open');
+    document.documentElement.style.overflow = '';
+    lenis?.start();
     if (lenis) lenis.scrollTo(target, { duration: 1.8 });
     else target.scrollIntoView({ behavior: reduceMotion ? 'auto' : 'smooth' });
   });
@@ -158,7 +162,7 @@ function introHero() {
   const hero = splitTargets.find((s) => s.el.classList.contains('hero__title'));
   gsap.fromTo(hero.words, { yPercent: 110, rotate: 4 }, { yPercent: 0, rotate: 0, duration: 1.4, ease: 'expo.out', stagger: 0.07 });
   gsap.to('.hero .reveal-up', { opacity: 1, y: 0, duration: 1.2, ease: 'expo.out', stagger: 0.12, delay: 0.3 });
-  gsap.from(['.nav', '.hero__hint', '.hero__meta'], { opacity: 0, y: -10, duration: 1, delay: 0.6, stagger: 0.1 });
+  gsap.from(['.nav', '.hero__hint', '.hero__meta'], { opacity: 0, y: -10, duration: 1, delay: 0.6, stagger: 0.1, clearProps: 'transform,opacity' });
 }
 
 /* ------------------------------------------------------------------
@@ -194,6 +198,8 @@ const nav = $('.nav');
 $('.nav__menu').addEventListener('click', () => {
   const open = nav.classList.toggle('is-open');
   $('.nav__menu').setAttribute('aria-expanded', open);
+  document.documentElement.style.overflow = open ? 'hidden' : '';
+  open ? lenis?.stop() : lenis?.start();
 });
 ScrollTrigger.create({ start: 80, onToggle: (s) => nav.classList.toggle('is-scrolled', s.isActive) });
 let lastY = 0;

@@ -6,7 +6,9 @@
   <title>Alta Vista Residence</title>
   <meta name="description" content="Apresentação interativa da identidade visual do Alta Vista Residence: essência, símbolo, cores, tipografia, linguagem visual e aplicações.">
   <meta name="theme-color" content="#193C30">
-  <link rel="icon" href="assets/brand/symbol.svg">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="icon" href="assets/favicon-32.png" sizes="32x32" type="image/png">
+  <link rel="apple-touch-icon" href="assets/apple-touch-icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400;9..40,600&family=Manrope:wght@500&family=Marcellus&display=swap" rel="stylesheet">
@@ -56,7 +58,7 @@
         <span>Mova o mouse · clique no símbolo</span>
         <span class="hero__scroll"><i></i>Role para explorar</span>
       </div>
-      <div class="hero__meta"><span class="endorse"><em>Um empreendimento</em><span class="endorse__mark" data-logo="avra"></span></span><span>Edição 01 · Outubro 2026</span></div>
+      <div class="hero__meta"><span class="endorse"><em>Um empreendimento</em><span class="endorse__mark" data-logo="avra"></span></span><span>Edição 01 · Outubro 2026</span><span class="hero__credit">Desenvolvido por <img src="assets/img/britto-group.png" alt="BRITTO* GROUP" width="852" height="339"></span></div>
     </section>
 
     <!-- ============ MANIFESTO ============ -->
@@ -263,7 +265,7 @@
           <div class="versions__logo is-active" data-version-panel="vertical"><span data-logo="vertical"></span></div>
           <div class="versions__logo" data-version-panel="horizontal"><span data-logo="horizontal"></span></div>
           <div class="versions__logo" data-version-panel="symbol"><span data-logo="symbol"></span></div>
-          <p class="versions__hint">Passe o mouse para ver a área de proteção</p>
+          <p class="versions__hint"><span class="mouse-only">Passe o mouse</span><span class="touch-only">Toque</span> para ver a área de proteção</p>
         </div>
         <div class="versions__info">
           <div><h3>Proteção</h3><p>Definir <em>x</em> como um quarto da largura do símbolo. Manter ao menos <em>x</em> de espaço livre ao redor da assinatura, sem texto, imagens ou grafismos concorrentes.</p></div>
@@ -348,7 +350,7 @@
       <div class="wrap">
         <p class="eyebrow">Paleta</p>
         <h2 class="h2" data-split>Cor com função e hierarquia.</h2>
-        <p class="palette__hint">Passe o mouse para expandir · clique para copiar o HEX</p>
+        <p class="palette__hint"><span class="mouse-only">Passe o mouse para expandir · clique</span><span class="touch-only">Toque</span> para copiar o HEX</p>
       </div>
       <div class="swatches" id="swatches">
         <button class="swatch" style="--c:#193C30;--t:#E8E3D5" data-hex="#193C30"><span class="swatch__name">Mata</span><span class="swatch__data"><b>#193C30</b>RGB 25, 60, 48<br>CMYK 58, 0, 20, 76</span><span class="swatch__role">Base principal · presença</span></button>
@@ -518,7 +520,7 @@
           <b>Pavilhão de vendas</b>
           <span>Símbolo e lettering em relevo dourado escovado, iluminação rasante sobre parede mineral.</span>
         </div>
-        <p class="studio__hint">Arraste para girar · clique para interagir</p>
+        <p class="studio__hint">Arraste para girar · <span class="mouse-only">clique</span><span class="touch-only">toque</span> para interagir</p>
       </div>
       <div class="studio__fallback">Ative o WebGL para ver os mockups 3D.</div>
     </section>
@@ -630,6 +632,21 @@
       </div>
     </section>
 
+    <!-- Créditos -->
+    <section class="credit section--mata" id="creditos">
+      <div class="credit__light" aria-hidden="true"></div>
+      <div class="wrap credit__inner">
+        <p class="eyebrow eyebrow--gold">Desenvolvido por</p>
+        <img src="assets/img/britto-group.png" alt="BRITTO* GROUP" class="credit__logo reveal-up" width="852" height="339" loading="lazy">
+        <p class="credit__text reveal-up">Nome, conceito, símbolo, sistema visual, guia de identidade e esta experiência digital do Alta Vista Residence foram desenvolvidos pela <strong>BRITTO* GROUP</strong> para a AVRA Incorporadora.</p>
+        <ul class="credit__list">
+          <li><span>Empreendimento</span>Alta Vista Residence</li>
+          <li><span>Incorporadora</span>AVRA Incorporadora · Boa Vista, RR</li>
+          <li><span>Criação e desenvolvimento</span>BRITTO* GROUP</li>
+        </ul>
+      </div>
+    </section>
+
     <!-- Fechamento -->
     <section class="finale" id="fim">
       <div class="parallax-media" data-parallax="0.2"><img src="assets/img/familia-gramado.webp" alt="" loading="lazy"></div>
@@ -641,7 +658,7 @@
         <div class="endorse endorse--finale"><em>Um empreendimento</em><span class="endorse__mark" data-logo="avra"></span><small>INCORPORADORA</small></div>
       </div>
       <footer class="footer wrap">
-        <span>Edição 01 · 22.10.2026 · Um empreendimento AVRA Incorporadora</span>
+        <span>Edição 01 · 22.10.2026 · Um empreendimento AVRA Incorporadora · Marca desenvolvida por BRITTO* GROUP</span>
         <span>Imagens e mockups gerados por IA para demonstração; não representam a implantação real.</span>
         <img src="assets/img/britto-group.png" alt="Britto Group" class="footer__britto">
       </footer>

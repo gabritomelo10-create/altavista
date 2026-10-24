@@ -69,7 +69,7 @@ export function initStudio(canvasEl, { onSelect }) {
   const gl = canvasEl.getContext('webgl2') || canvasEl.getContext('webgl');
   if (!gl) throw new Error('WebGL indisponível');
   const renderer = new THREE.WebGLRenderer({ canvas: canvasEl, antialias: true, alpha: true });
-  renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+  renderer.setPixelRatio(Math.min(devicePixelRatio, innerWidth < 760 ? 1.5 : 2));
   renderer.toneMapping = THREE.ACESFilmicToneMapping;
   renderer.toneMappingExposure = 1.0;
   renderer.shadowMap.enabled = true;
