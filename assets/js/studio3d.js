@@ -1,22 +1,24 @@
 import * as THREE from 'three';
 import { SVGLoader } from 'three/addons/loaders/SVGLoader.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
-import { VERTICAL, P01 } from './brand-paths.js';
+import { VERTICAL, P01, AVRA } from './brand-paths.js';
 
 const HEX = { mata: '#193C30', floresta: '#284B3B', oliva: '#667451', salvia: '#A0AD91', dourado: '#B79A58', douradoClaro: '#D7C18C', mineral: '#E8E3D5' };
-const VB = { vertical: [330, 178, 620, 480], symbol: [462, 181, 355, 313], p01: [486, 210, 794, 400] };
+const VB = { vertical: [330, 178, 620, 480], symbol: [462, 181, 355, 313], p01: [486, 210, 794, 400], avra: [30, 36, 3441, 558] };
 const PATHS = {
   vertical: [VERTICAL.symbol, VERTICAL.lettering, VERTICAL.residence],
   symbol: [VERTICAL.symbol],
   p01: [P01.d],
+  avra: [AVRA.d],
 };
 
 const CAPTIONS = [
-  ['Pavilhão de vendas', 'Símbolo e lettering em relevo dourado escovado, com luz de fundo sobre parede mineral. Clique para acender o halo.'],
-  ['Garrafa térmica', 'Pintura Mata com o símbolo em dourado, tampa metálica. Clique para abrir a tampa.'],
-  ['Caderno de boas-vindas', 'Capa em tecido Sálvia com assinatura Mata e guarda com o P01. Clique para abrir.'],
-  ['Crachá', 'Oliva com assinatura em foil dourado; P01 discreto no verso. Arraste para balançar, clique para girar.'],
-  ['Convite', 'Papel mineral com baixo-relevo do P01 e envelope Sálvia. Clique para aproximar.'],
+  ['Totem de entrada', 'Monólito Oliva com símbolo e lettering em relevo dourado, ao lado do muro de pedra com o símbolo. Clique para anoitecer.'],
+  ['Recepção do pavilhão', 'Relevo dourado escovado com luz de fundo sobre parede mineral e balcão de madeira. Clique para acender o halo.'],
+  ['Kit de apresentação', 'Caixa Mineral com P01 em baixo-relevo e endosso AVRA; pasta Mata com foil dourado por dentro. Clique para abrir.'],
+  ['Caderno Mata', 'Capa em couro Mata com o símbolo em foil dourado e elástico. Clique para abrir.'],
+  ['Crachá', 'Mata com assinatura em foil dourado e endosso AVRA Incorporadora. Arraste para balançar, clique para girar.'],
+  ['Chaveiro', 'O símbolo em metal dourado maciço. Arraste para girar, clique para lançar.'],
 ];
 
 /* ---------------- helpers de canvas ---------------- */
@@ -54,6 +56,18 @@ function spaced(ctx, text, x, y, spacing) {
   total -= spacing;
   let cx = x - total / 2;
   chars.forEach((ch) => { ctx.fillText(ch, cx, y); cx += ctx.measureText(ch).width + spacing; });
+}
+function plaster(ctx, w, h, base, dots = 2600) {
+  ctx.fillStyle = base; ctx.fillRect(0, 0, w, h);
+  for (let i = 0; i < dots; i++) { ctx.fillStyle = `rgba(${Math.random() < 0.5 ? '0,0,0' : '255,255,250'},${Math.random() * 0.06})`; ctx.beginPath(); ctx.arc(Math.random() * w, Math.random() * h, Math.random() * 5, 0, 7); ctx.fill(); }
+  noise(ctx, w, h, 16);
+}
+function reliefLogo(kind, mat, depth = 14) {
+  const g = new THREE.Group();
+  PATHS[kind].forEach((d) => shapesOf(d).forEach((sh) => {
+    g.add(new THREE.Mesh(new THREE.ExtrudeGeometry(sh, { depth, bevelEnabled: true, bevelThickness: 1.4, bevelSize: 0.6, bevelSegments: 3, curveSegments: 18 }), mat));
+  }));
+  return g;
 }
 function shapesOf(d) {
   const data = new SVGLoader().parse(`<svg xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="${d}"/></svg>`);
@@ -96,7 +110,7 @@ export function initStudio(canvasEl, { onSelect }) {
   const ground = new THREE.Mesh(new THREE.PlaneGeometry(30, 30), new THREE.ShadowMaterial({ opacity: 0.28 }));
   ground.rotation.x = -Math.PI / 2; ground.receiveShadow = true; scene.add(ground);
 
-  const items = [makeSign(), makeBottle(), makeNotebook(), makeBadge(), makeInvite()];
+  const items = [makeTotem(), makeSign(), makeKit(), makeNotebook(), makeBadge(), makeKeychain()];
   items.forEach((it) => { it.group.visible = false; scene.add(it.group); it.group.traverse((o) => { if (o.isMesh) { o.castShadow = true; o.receiveShadow = true; } }); });
 
   /* ---------- seleção ---------- */
@@ -235,6 +249,15 @@ function makeSign() {
   logo.position.set(-640 * s, 418 * s + 0.25, -0.1);
   spin.add(logo);
 
+  // balcão de madeira com faixa de luz
+  const deskTop = new THREE.Mesh(new THREE.BoxGeometry(6.4, 0.16, 1.5), woodMat);
+  deskTop.position.set(0, -1.95, 1.25); spin.add(deskTop);
+  const [dc, dx] = canvas(512, 160); plaster(dx, 512, 160, '#e9e2d2', 400);
+  const deskBody = new THREE.Mesh(new THREE.BoxGeometry(6.2, 1.1, 1.3), new THREE.MeshStandardMaterial({ map: tex(dc), roughness: 0.9 }));
+  deskBody.position.set(0, -2.6, 1.25); spin.add(deskBody);
+  const strip = new THREE.Mesh(new THREE.BoxGeometry(6.2, 0.04, 0.02), new THREE.MeshBasicMaterial({ color: 0xffe2a8 }));
+  strip.position.set(0, -2.07, 1.91); spin.add(strip);
+
   const spot = new THREE.SpotLight(0xffe9c4, 60, 12, 0.55, 0.6, 1.4);
   spot.position.set(0, 4.2, 2.6); spot.target.position.set(0, 0.3, -0.2);
   spot.castShadow = true; spot.shadow.mapSize.set(1024, 1024); spot.shadow.bias = -0.0005;
@@ -244,78 +267,148 @@ function makeSign() {
   const it = {
     group, spin, limitSpin: 0.7, rest: { x: 0, y: -0.18 }, groundY: null, shift: 2.0,
     cam: { pos: { x: 0, y: 0.3, z: 10.5 }, target: { x: 0, y: 0.1, z: 0 } },
-    reset() { lit = true; haloMat.opacity = 0; window.gsap.to(haloMat, { opacity: 0.5, duration: 2.4, delay: 1, ease: 'power2.inOut' }); },
-    click() { lit = !lit; window.gsap.to(haloMat, { opacity: lit ? 0.5 : 0, duration: 1.2, ease: 'power2.inOut' }); window.gsap.to(spot, { intensity: lit ? 60 : 110, duration: 1.2 }); },
+    reset() { lit = true; haloMat.opacity = 0; window.gsap.to(haloMat, { opacity: 0.32, duration: 2.4, delay: 1, ease: 'power2.inOut' }); },
+    click() { lit = !lit; window.gsap.to(haloMat, { opacity: lit ? 0.32 : 0, duration: 1.2, ease: 'power2.inOut' }); window.gsap.to(spot, { intensity: lit ? 60 : 110, duration: 1.2 }); },
     update(dt, t) { spot.position.x = Math.sin(t * 0.5) * 1.2; },
   };
   return it;
 }
 
 /* =================================================================
-   1 · GARRAFA TÉRMICA
+   TOTEM DE ENTRADA
 ================================================================= */
-function makeBottle() {
+function makeTotem() {
   const group = new THREE.Group(); const spin = new THREE.Group(); group.add(spin);
-  group.position.y = -1.35;
+  group.position.y = -1.9;
 
-  const R = 0.62;
-  const prof = [];
-  const add = (r, y) => prof.push(new THREE.Vector2(r, y));
-  add(0.001, 0); add(R - 0.06, 0); add(R - 0.01, 0.03); add(R, 0.1);
-  for (let i = 1; i <= 16; i++) add(R, 0.1 + (i / 16) * 1.85);
-  for (let i = 1; i <= 10; i++) { const a = (i / 10) * (Math.PI / 2); add(0.45 + (R - 0.45) * Math.cos(a), 1.95 + Math.sin(a) * 0.32); }
-  add(0.44, 2.36);
-  const body = new THREE.LatheGeometry(prof, 128);
+  // monólito Oliva, reboco texturizado
+  const [oc, ox] = canvas(512, 900); plaster(ox, 512, 900, '#3f4a2b', 3000);
+  const [ob, obx] = canvas(256, 450); obx.drawImage(oc, 0, 0, 256, 450);
+  const olive = new THREE.MeshStandardMaterial({ map: tex(oc), bumpMap: tex(ob, false), bumpScale: 2, roughness: 1 });
+  const W = 2.5; const H = 4.3; const D = 0.8;
+  const mono = new THREE.Mesh(new THREE.BoxGeometry(W, H, D), olive);
+  mono.position.set(0.6, H / 2, 0); spin.add(mono);
 
-  // UVs da Lathe: u = ângulo, v = índice do ponto → posicionamos o símbolo pela altura
-  const W = 2048; const H = 1024;
-  const [cc, cx] = canvas(W, H); const [mc, mx] = canvas(W, H); const [rc, rx] = canvas(W, H);
-  cx.fillStyle = HEX.mata; cx.fillRect(0, 0, W, H); noise(cx, W, H, 6);
-  mx.fillStyle = '#000'; mx.fillRect(0, 0, W, H);
-  rx.fillStyle = '#9a9a9a'; rx.fillRect(0, 0, W, H); noise(rx, W, H, 30);
-  const vOf = (y) => { // y em unidades → v (0 embaixo)
-    let best = 0;
-    prof.forEach((p, i) => { if (Math.abs(p.y - y) < Math.abs(prof[best].y - y)) best = i; });
-    return best / (prof.length - 1);
+  const gold = brushedGold(0.32);
+  const logo = reliefLogo('vertical', gold, 12);
+  const ls = 0.0034; logo.scale.set(ls, -ls, ls);
+  logo.position.set(0.6 - 640 * ls, H * 0.62 + 418 * ls, D / 2 - 0.01);
+  spin.add(logo);
+
+  // muro de pedra (travertino) com o símbolo
+  const [sc, sx] = canvas(1024, 400);
+  sx.fillStyle = '#c2ad86'; sx.fillRect(0, 0, 1024, 400);
+  for (let i = 0; i < 5000; i++) { sx.fillStyle = `rgba(${Math.random() < 0.6 ? '140,115,80' : '255,250,235'},${Math.random() * 0.25})`; sx.beginPath(); sx.ellipse(Math.random() * 1024, Math.random() * 400, Math.random() * 4 + 0.5, Math.random() * 2 + 0.3, 0, 0, 7); sx.fill(); }
+  sx.strokeStyle = 'rgba(120,100,70,.35)'; sx.lineWidth = 2;
+  [200, 0].forEach((y) => { sx.beginPath(); sx.moveTo(0, y + 200); sx.lineTo(1024, y + 200); sx.stroke(); });
+  [256, 640].forEach((x) => { sx.beginPath(); sx.moveTo(x, 0); sx.lineTo(x, 200); sx.stroke(); });
+  [430, 860].forEach((x) => { sx.beginPath(); sx.moveTo(x, 200); sx.lineTo(x, 400); sx.stroke(); });
+  noise(sx, 1024, 400, 14);
+  const [sb, sbx] = canvas(512, 200); sbx.drawImage(sc, 0, 0, 512, 200);
+  const stone = new THREE.MeshStandardMaterial({ map: tex(sc), bumpMap: tex(sb, false), bumpScale: 4, roughness: 0.95 });
+  const wall = new THREE.Mesh(new THREE.BoxGeometry(4.2, 1.9, 0.7), stone);
+  wall.position.set(-2.2, 0.95, -0.35); spin.add(wall);
+  const sym = reliefLogo('symbol', gold, 10);
+  const ss = 0.0022; sym.scale.set(ss, -ss, ss);
+  sym.position.set(-2.9 - 639.5 * ss, 1.05 + 337.5 * ss, 0.0);
+  spin.add(sym);
+
+  // canteiro com folhagem estilizada
+  const leafMat = new THREE.MeshStandardMaterial({ color: '#2f4423', roughness: 0.8, side: THREE.DoubleSide });
+  const leafGeo = new THREE.PlaneGeometry(0.035, 0.5); leafGeo.translate(0, 0.25, 0);
+  const leaves = new THREE.Group();
+  for (let i = 0; i < 260; i++) {
+    const l = new THREE.Mesh(leafGeo, leafMat);
+    l.position.set(-4 + Math.random() * 6.6, 0, 0.45 + Math.random() * 0.9);
+    l.rotation.set((Math.random() - 0.5) * 0.9, Math.random() * Math.PI, (Math.random() - 0.5) * 0.9);
+    l.scale.setScalar(0.5 + Math.random() * 0.7);
+    l.userData.p = Math.random() * 6;
+    leaves.add(l);
+  }
+  spin.add(leaves);
+
+  // luz de chão (anoitecer)
+  const up = new THREE.SpotLight(0xffd9a0, 0, 9, 0.5, 0.7, 1.2);
+  up.position.set(0.6, 0.05, 1.6); up.target.position.set(0.6, 3.4, 0.4);
+  spin.add(up, up.target);
+  const wash = new THREE.PointLight(0xffc98a, 0, 4, 2); wash.position.set(-2.2, 0.2, 0.6); spin.add(wash);
+
+  let night = false;
+  return {
+    group, spin, limitSpin: 0.85, rest: { x: 0, y: -0.35 }, groundY: -1.9, shift: 1.2,
+    cam: { pos: { x: 0, y: 0.4, z: 11 }, target: { x: 0, y: 0.2, z: 0 } },
+    reset() { night = false; up.intensity = 0; wash.intensity = 0; },
+    click() {
+      night = !night;
+      window.gsap.to(up, { intensity: night ? 70 : 0, duration: 1.6, ease: 'power2.inOut' });
+      window.gsap.to(wash, { intensity: night ? 6 : 0, duration: 1.6, ease: 'power2.inOut' });
+    },
+    update(dt, t) { leaves.children.forEach((l) => { l.rotation.z = Math.sin(t * 1.4 + l.userData.p) * 0.12; }); },
   };
-  const vC = vOf(1.15);
-  const symW = 0.78; const pxPerU = W / (2 * Math.PI * R);
-  const pxPerUV = H * ((vOf(1.6) - vOf(0.7)) / 0.9); // px por unidade na altura do corpo
-  const sw = symW * pxPerU; const sy = pxPerUV / pxPerU;
-  const ccx = W * 0.5; const ccy = H * (1 - vC);
-  drawBrand(cx, 'symbol', ccx, ccy, sw, goldCss(cx, ccx - sw / 2, ccy - sw / 2, ccx + sw / 2, ccy + sw / 2), { sy });
-  drawBrand(mx, 'symbol', ccx, ccy, sw, '#fff', { sy });
-  drawBrand(rx, 'symbol', ccx, ccy, sw, '#4a4a4a', { sy });
-  const bodyMat = new THREE.MeshPhysicalMaterial({ map: tex(cc), metalnessMap: tex(mc, false), roughnessMap: tex(rc, false), metalness: 1, roughness: 1, clearcoat: 0.15, clearcoatRoughness: 0.6 });
-  const bottle = new THREE.Mesh(body, bodyMat);
-  bottle.rotation.y = Math.PI; // símbolo voltado para a câmera
-  spin.add(bottle);
+}
 
-  // tampa dourada
-  const cap = new THREE.Group();
-  const capBody = new THREE.Mesh(new THREE.CylinderGeometry(0.47, 0.47, 0.42, 96, 1), brushedGold(0.3));
-  const capTop = new THREE.Mesh(new THREE.TorusGeometry(0.43, 0.04, 16, 96), brushedGold(0.25));
-  capTop.rotation.x = Math.PI / 2; capTop.position.y = 0.21;
-  const capLid = new THREE.Mesh(new THREE.CircleGeometry(0.44, 96), brushedGold(0.22));
-  capLid.rotation.x = -Math.PI / 2; capLid.position.y = 0.245;
-  cap.add(capBody, capTop, capLid);
-  cap.position.y = 2.36 + 0.2;
-  spin.add(cap);
-  const neckRing = new THREE.Mesh(new THREE.CylinderGeometry(0.445, 0.445, 0.06, 64), new THREE.MeshStandardMaterial({ color: HEX.floresta, roughness: 0.5 }));
-  neckRing.position.y = 2.34; spin.add(neckRing);
+/* =================================================================
+   KIT DE APRESENTAÇÃO (caixa + pasta)
+================================================================= */
+function makeKit() {
+  const group = new THREE.Group(); const spin = new THREE.Group(); group.add(spin);
+  group.position.y = -0.9;
+  const W = 3.2; const L = 4.0; const Hb = 0.55; const lidH = 0.32;
+
+  // tampa: Mineral, logo Mata, endosso AVRA, P01 em baixo-relevo
+  const CW = 1280; const CH = 1600;
+  const [lc, lx] = canvas(CW, CH); const [lb, lbx] = canvas(CW / 2, CH / 2);
+  lx.fillStyle = '#ddd5c2'; lx.fillRect(0, 0, CW, CH); noise(lx, CW, CH, 7);
+  drawBrand(lx, 'vertical', CW / 2, 430, 620, HEX.mata);
+  lx.fillStyle = HEX.dourado; lx.fillRect(CW / 2 - 60, 720, 120, 3);
+  drawEndorseCentered(lx, CW / 2, 800, 420, HEX.mata);
+  lx.save(); lx.globalAlpha = 0.07; lx.translate(0, CH); lx.rotate(-Math.PI / 2); drawBrand(lx, 'p01', 300, 380, 1500, '#6a6252'); lx.restore();
+  lbx.fillStyle = '#808080'; lbx.fillRect(0, 0, CW / 2, CH / 2);
+  lbx.save(); lbx.filter = 'blur(1.5px)'; lbx.translate(0, CH / 2); lbx.rotate(-Math.PI / 2); drawBrand(lbx, 'p01', 150, 190, 750, '#c4c4c4'); lbx.restore();
+  const lidTop = new THREE.MeshStandardMaterial({ map: tex(lc), bumpMap: tex(lb, false), bumpScale: 5, roughness: 0.85 });
+  const paper = new THREE.MeshStandardMaterial({ color: '#d6cdb8', roughness: 0.95 });
+
+  const base = new THREE.Mesh(new THREE.BoxGeometry(W - 0.04, Hb, L - 0.04), paper);
+  base.position.y = Hb / 2; spin.add(base);
+
+  // pasta Mata com foil dourado (dentro da caixa)
+  const [fc, fx] = canvas(1000, 1300); const [fm, fmx] = canvas(1000, 1300); const [fr, frx] = canvas(1000, 1300);
+  fx.fillStyle = HEX.mata; fx.fillRect(0, 0, 1000, 1300); noise(fx, 1000, 1300, 8);
+  fmx.fillStyle = '#000'; fmx.fillRect(0, 0, 1000, 1300); frx.fillStyle = '#d0d0d0'; frx.fillRect(0, 0, 1000, 1300);
+  const gl = goldCss(fx, 200, 200, 800, 900);
+  drawBrand(fx, 'vertical', 500, 420, 520, gl); drawBrand(fmx, 'vertical', 500, 420, 520, '#fff'); drawBrand(frx, 'vertical', 500, 420, 520, '#555');
+  fx.fillStyle = HEX.douradoClaro; fx.fillRect(450, 690, 100, 3);
+  drawEndorseCentered(fx, 500, 760, 340, gl); drawEndorseCentered(fmx, 500, 760, 340, '#fff'); drawEndorseCentered(frx, 500, 760, 340, '#555');
+  const folderMat = new THREE.MeshPhysicalMaterial({ map: tex(fc), metalnessMap: tex(fm, false), roughnessMap: tex(fr, false), metalness: 1, roughness: 1 });
+  const folderEdge = new THREE.MeshStandardMaterial({ color: HEX.mata, roughness: 0.8 });
+  const folder = new THREE.Mesh(new THREE.BoxGeometry(W - 0.5, 0.05, L - 0.6), [folderEdge, folderEdge, folderMat, folderEdge, folderEdge, folderEdge]);
+  folder.position.y = Hb + 0.03; spin.add(folder);
+
+  const lid = new THREE.Group(); lid.position.y = Hb + lidH / 2 + 0.06; spin.add(lid);
+  const lidMesh = new THREE.Mesh(new THREE.BoxGeometry(W, lidH, L), [paper, paper, lidTop, paper, paper, paper]);
+  lid.add(lidMesh);
 
   let open = false;
   return {
-    group, spin, freeSpin: true, rest: { x: 0.12, y: 0 }, groundY: -1.35,
-    cam: { pos: { x: 0, y: 0.6, z: 8.2 }, target: { x: 0, y: -0.1, z: 0 } },
-    reset() { open = false; cap.position.y = 2.56; cap.rotation.y = 0; },
+    group, spin, freeSpin: false, limitSpin: 1.2, rest: { x: 0.85, y: -0.35 }, groundY: -0.9,
+    cam: { pos: { x: 0, y: 1.6, z: 9.5 }, target: { x: 0, y: -0.2, z: 0 } },
+    reset() { open = false; lid.position.set(0, Hb + lidH / 2 + 0.06, 0); lid.rotation.set(0, 0, 0); },
     click() {
       open = !open;
-      window.gsap.to(cap.position, { y: open ? 3.25 : 2.56, duration: 1.4, ease: open ? 'power3.out' : 'power3.inOut' });
-      window.gsap.to(cap.rotation, { y: open ? -Math.PI * 3 : 0, z: open ? 0.25 : 0, duration: 1.4, ease: 'power3.inOut' });
+      const g = window.gsap;
+      g.to(lid.position, { y: open ? 1.6 : Hb + lidH / 2 + 0.06, x: open ? 2.4 : 0, z: open ? -0.6 : 0, duration: 1.4, ease: 'expo.inOut' });
+      g.to(lid.rotation, { z: open ? -0.35 : 0, y: open ? 0.25 : 0, duration: 1.4, ease: 'expo.inOut' });
     },
-    update(dt, t) { if (open) cap.position.x = Math.sin(t * 1.2) * 0.03; },
   };
+}
+function drawEndorseCentered(ctx, cx, y, w, color) {
+  ctx.save(); ctx.fillStyle = color;
+  ctx.font = `500 ${Math.round(w * 0.075)}px "DM Sans", Arial`;
+  spaced(ctx, 'UM EMPREENDIMENTO', cx, y, w * 0.02);
+  drawBrand(ctx, 'avra', cx, y + w * 0.14, w * 0.5, color);
+  ctx.font = `500 ${Math.round(w * 0.055)}px Manrope, "DM Sans", Arial`;
+  spaced(ctx, 'INCORPORADORA', cx, y + w * 0.3, w * 0.035);
+  ctx.restore();
 }
 
 /* =================================================================
@@ -325,26 +418,23 @@ function makeNotebook() {
   const group = new THREE.Group(); const spin = new THREE.Group(); group.add(spin);
   const W = 2.2; const Hh = 3.0; const T = 0.05; const P = 0.3;
 
-  // capa
-  const [cc, cx] = canvas(1100, 1500);
-  cx.fillStyle = HEX.salvia; cx.fillRect(0, 0, 1100, 1500);
-  for (let y = 0; y < 1500; y += 3) { cx.fillStyle = `rgba(25,60,48,${Math.random() * 0.05})`; cx.fillRect(0, y, 1100, 1); }
-  for (let x = 0; x < 1100; x += 3) { cx.fillStyle = `rgba(255,255,255,${Math.random() * 0.04})`; cx.fillRect(x, 0, 1, 1500); }
-  noise(cx, 1100, 1500, 10);
-  drawBrand(cx, 'vertical', 550, 560, 640, HEX.mata);
-  cx.fillStyle = HEX.dourado; cx.fillRect(500, 900, 100, 3);
-  cx.fillStyle = HEX.mata; cx.font = '400 40px "DM Sans", Arial'; cx.textAlign = 'left';
-  spaced(cx, 'Nossos próximos capítulos', 550, 990, 4);
+  // capa: couro Mata com o símbolo em foil dourado
+  const [cc, cx] = canvas(1100, 1500); const [cm, cmx] = canvas(1100, 1500); const [cr, crx] = canvas(1100, 1500);
+  cx.fillStyle = '#1d4234'; cx.fillRect(0, 0, 1100, 1500);
+  for (let i = 0; i < 9000; i++) { cx.fillStyle = `rgba(${Math.random() < 0.5 ? '0,0,0' : '120,160,130'},${Math.random() * 0.08})`; cx.fillRect(Math.random() * 1100, Math.random() * 1500, 2, 2); }
+  noise(cx, 1100, 1500, 8);
+  cmx.fillStyle = '#000'; cmx.fillRect(0, 0, 1100, 1500); crx.fillStyle = '#b0b0b0'; crx.fillRect(0, 0, 1100, 1500);
+  const foil = goldCss(cx, 330, 450, 770, 900);
+  drawBrand(cx, 'symbol', 550, 680, 440, foil); drawBrand(cmx, 'symbol', 550, 680, 440, '#fff'); drawBrand(crx, 'symbol', 550, 680, 440, '#444');
   const [bc, bx] = canvas(550, 750); bx.drawImage(cc, 0, 0, 550, 750);
   const coverTex = tex(cc);
-
   // guarda (verso da capa) com P01
   const [gc, gx] = canvas(1100, 1500);
   gx.fillStyle = '#eee9dc'; gx.fillRect(0, 0, 1100, 1500); noise(gx, 1100, 1500, 6);
   gx.save(); gx.translate(1100, 0); gx.rotate(Math.PI / 2); drawBrand(gx, 'p01', 900, 300, 2200, HEX.salvia); gx.restore();
 
-  const plain = new THREE.MeshStandardMaterial({ color: HEX.salvia, roughness: 0.85 });
-  const coverMat = new THREE.MeshStandardMaterial({ map: coverTex, bumpMap: tex(bc, false), bumpScale: 1.2, roughness: 0.85 });
+  const plain = new THREE.MeshStandardMaterial({ color: '#1d4234', roughness: 0.7 });
+  const coverMat = new THREE.MeshPhysicalMaterial({ map: coverTex, bumpMap: tex(bc, false), bumpScale: 1.2, metalnessMap: tex(cm, false), roughnessMap: tex(cr, false), metalness: 1, roughness: 1, clearcoat: 0.15 });
   const guardMat = new THREE.MeshStandardMaterial({ map: tex(gc), roughness: 0.9 });
 
   const back = new THREE.Mesh(new THREE.BoxGeometry(W, Hh, T), plain);
@@ -374,16 +464,23 @@ function makeNotebook() {
   const front = new THREE.Mesh(new THREE.BoxGeometry(W, Hh, T), [plain, plain, plain, plain, coverMat, guardMat]);
   front.position.x = W / 2; hinge.add(front);
 
+  // elástico vertical
+  const band = new THREE.Mesh(new THREE.BoxGeometry(0.1, Hh + 0.02, P + 2 * T + 0.03), new THREE.MeshStandardMaterial({ color: '#12301f', roughness: 0.6 }));
+  band.position.set(W / 2 - 0.32, 0, 0); spin.add(band);
   // fita marcadora
-  const ribbon = new THREE.Mesh(new THREE.PlaneGeometry(0.07, 0.9), new THREE.MeshStandardMaterial({ color: HEX.mata, roughness: 0.5, side: THREE.DoubleSide }));
+  const ribbon = new THREE.Mesh(new THREE.PlaneGeometry(0.07, 0.9), new THREE.MeshStandardMaterial({ color: HEX.oliva, roughness: 0.5, side: THREE.DoubleSide }));
   ribbon.position.set(0.55, -Hh / 2 - 0.3, 0.05); ribbon.rotation.z = 0.06; spin.add(ribbon);
 
   let open = false;
   return {
     group, spin, freeSpin: true, rest: { x: 0.1, y: 0.35 }, groundY: -1.62,
     cam: { pos: { x: 0, y: 0.5, z: 9 }, target: { x: 0.3, y: 0, z: 0 } },
-    reset() { open = false; hinge.rotation.y = 0; },
-    click() { open = !open; window.gsap.to(hinge.rotation, { y: open ? -2.5 : 0, duration: 1.6, ease: 'expo.inOut' }); },
+    reset() { open = false; hinge.rotation.y = 0; band.position.x = W / 2 - 0.32; },
+    click() {
+      open = !open;
+      window.gsap.to(band.position, { x: open ? W / 2 + 0.2 : W / 2 - 0.32, duration: 0.5, ease: 'power2.out' });
+      window.gsap.to(hinge.rotation, { y: open ? -2.5 : 0, duration: 1.6, delay: open ? 0.25 : 0, ease: 'expo.inOut' });
+    },
     update(dt, t) { ribbon.rotation.z = 0.06 + Math.sin(t * 1.3) * 0.04; },
   };
 }
@@ -412,20 +509,19 @@ function makeBadge() {
   for (let i = 0; i < uv.count; i++) uv.setXY(i, (pos.getX(i) + W / 2) / W, (pos.getY(i) + H / 2) / H);
 
   const CW = 900; const CH = 1250;
-  // frente: Oliva com foil dourado
+  // frente: Mata com foil dourado e endosso AVRA
   const [fc, fx] = canvas(CW, CH); const [mc, mx] = canvas(CW, CH); const [rc, rx] = canvas(CW, CH);
-  fx.fillStyle = HEX.oliva; fx.fillRect(0, 0, CW, CH); noise(fx, CW, CH, 8);
+  fx.fillStyle = HEX.mata; fx.fillRect(0, 0, CW, CH); noise(fx, CW, CH, 8);
   mx.fillStyle = '#000'; mx.fillRect(0, 0, CW, CH);
   rx.fillStyle = '#c8c8c8'; rx.fillRect(0, 0, CW, CH);
-  const gl = goldCss(fx, 200, 300, 700, 800);
-  drawBrand(fx, 'vertical', CW / 2, 520, 560, gl); drawBrand(mx, 'vertical', CW / 2, 520, 560, '#fff'); drawBrand(rx, 'vertical', CW / 2, 520, 560, '#555');
-  fx.fillStyle = HEX.douradoClaro; fx.fillRect(CW / 2 - 50, 790, 100, 3); mx.fillStyle = '#fff'; mx.fillRect(CW / 2 - 50, 790, 100, 3);
-  fx.textAlign = 'center'; fx.fillStyle = HEX.mineral; fx.font = '600 50px "DM Sans", Arial'; fx.fillText('Nome do Colaborador', CW / 2, 900);
-  fx.fillStyle = HEX.salvia; fx.font = '400 34px "DM Sans", Arial'; fx.fillText('Função', CW / 2, 960);
+  const gl = goldCss(fx, 200, 200, 700, 700);
+  drawBrand(fx, 'vertical', CW / 2, 420, 560, gl); drawBrand(mx, 'vertical', CW / 2, 420, 560, '#fff'); drawBrand(rx, 'vertical', CW / 2, 420, 560, '#555');
+  fx.fillStyle = HEX.douradoClaro; fx.fillRect(CW / 2 - 50, 700, 100, 3); mx.fillStyle = '#fff'; mx.fillRect(CW / 2 - 50, 700, 100, 3);
+  drawEndorseCentered(fx, CW / 2, 800, 440, HEX.mineral);
   const frontMat = new THREE.MeshPhysicalMaterial({ map: tex(fc), metalnessMap: tex(mc, false), roughnessMap: tex(rc, false), metalness: 1, roughness: 1, sheen: 0.3 });
   // verso: P01 discreto
   const [bc, bx] = canvas(CW, CH);
-  bx.fillStyle = HEX.oliva; bx.fillRect(0, 0, CW, CH); noise(bx, CW, CH, 8);
+  bx.fillStyle = HEX.mata; bx.fillRect(0, 0, CW, CH); noise(bx, CW, CH, 8);
   bx.save(); bx.translate(CW, 0); bx.rotate(Math.PI / 2); drawBrand(bx, 'p01', 700, 260, 1800, 'rgba(160,173,145,0.55)'); bx.restore();
   const backMat = new THREE.MeshStandardMaterial({ map: tex(bc), roughness: 0.9 });
 
@@ -441,7 +537,7 @@ function makeBadge() {
   const clip = new THREE.Mesh(new THREE.CapsuleGeometry(0.05, 0.22, 6, 16), metal);
   clip.position.set(0, ring.position.y + 0.22, 0); pivot.add(clip);
   const [lc, lx] = canvas(64, 512);
-  lx.fillStyle = HEX.mata; lx.fillRect(0, 0, 64, 512);
+  lx.fillStyle = '#3f4a2c'; lx.fillRect(0, 0, 64, 512);
   for (let y = 0; y < 512; y += 4) { lx.fillStyle = `rgba(160,173,145,${0.08 + Math.random() * 0.06})`; lx.fillRect(0, y, 64, 2); }
   const lt = tex(lc); lt.wrapS = lt.wrapT = THREE.RepeatWrapping; lt.repeat.set(1, 6);
   const strapMat = new THREE.MeshStandardMaterial({ map: lt, roughness: 0.8, side: THREE.DoubleSide });
@@ -470,63 +566,36 @@ function makeBadge() {
 }
 
 /* =================================================================
-   4 · CONVITE
+   CHAVEIRO
 ================================================================= */
-function makeInvite() {
+function makeKeychain() {
   const group = new THREE.Group(); const spin = new THREE.Group(); group.add(spin);
+  const gold = new THREE.MeshPhysicalMaterial({ color: '#c3a465', metalness: 1, roughness: 0.22, clearcoat: 0.3, clearcoatRoughness: 0.2 });
+  const sym = new THREE.Group();
+  PATHS.symbol.forEach((d) => shapesOf(d).forEach((sh) => {
+    sym.add(new THREE.Mesh(new THREE.ExtrudeGeometry(sh, { depth: 26, bevelEnabled: true, bevelThickness: 4, bevelSize: 2.5, bevelSegments: 5, curveSegments: 32 }), gold));
+  }));
+  const k = 0.0066; sym.scale.set(k, -k, k);
+  sym.position.set(-639.5 * k, 337.5 * k - 0.4, -13 * k);
+  spin.add(sym);
+  // argola e elo
+  const ring = new THREE.Mesh(new THREE.TorusGeometry(0.45, 0.05, 24, 96), gold);
+  ring.position.set(0.05, 1.3, 0); ring.rotation.y = 0.5; spin.add(ring);
+  const link = new THREE.Mesh(new THREE.TorusGeometry(0.16, 0.035, 16, 48), gold);
+  link.position.set(0.02, 0.8, 0); link.rotation.y = Math.PI / 2; spin.add(link);
 
-  // envelope Sálvia com P01 em baixo-relevo
-  const [ec, ex] = canvas(1040, 1360); const [ebc, ebx] = canvas(520, 680);
-  ex.fillStyle = HEX.salvia; ex.fillRect(0, 0, 1040, 1360); noise(ex, 1040, 1360, 10);
-  ebx.fillStyle = '#808080'; ebx.fillRect(0, 0, 520, 680);
-  ebx.save(); ebx.filter = 'blur(2px)'; ebx.translate(0, 680); ebx.rotate(-Math.PI / 2); drawBrand(ebx, 'p01', 160, 380, 900, '#b0b0b0'); ebx.restore();
-  const envMat = new THREE.MeshStandardMaterial({ map: tex(ec), bumpMap: tex(ebc, false), bumpScale: 6, roughness: 0.9 });
-  const env = new THREE.Mesh(new THREE.BoxGeometry(2.6, 3.4, 0.03), [envMat, envMat, envMat, envMat, envMat, envMat]);
-  env.position.set(-0.45, 0.05, -0.06); env.rotation.z = 0.05; spin.add(env);
-
-  // cartão mineral
-  const CW = 1100; const CH = 1500;
-  const [cc, cx] = canvas(CW, CH); const [bc, bx] = canvas(CW / 2, CH / 2);
-  cx.fillStyle = '#efebe1'; cx.fillRect(0, 0, CW, CH); noise(cx, CW, CH, 6);
-  drawBrand(cx, 'vertical', CW / 2, 380, 520, HEX.mata);
-  cx.fillStyle = HEX.dourado; cx.fillRect(CW / 2 - 70, 640, 140, 3);
-  cx.fillStyle = HEX.mata; cx.textAlign = 'center'; cx.font = '400 72px Marcellus, Georgia';
-  cx.fillText('Um convite para', CW / 2, 790); cx.fillText('imaginar novos dias.', CW / 2, 880);
-  cx.font = '400 34px "DM Sans", Arial'; cx.fillStyle = HEX.floresta; cx.fillText('Conheça o Alta Vista Residence.', CW / 2, 965);
-  bx.fillStyle = '#808080'; bx.fillRect(0, 0, CW / 2, CH / 2);
-  bx.save(); bx.filter = 'blur(1.5px)'; bx.translate(0, CH / 2); bx.rotate(-Math.PI / 2); drawBrand(bx, 'p01', 70, 330, 760, '#c8c8c8'); bx.restore();
-  // leve sombreamento do relevo na cor
-  cx.save(); cx.globalAlpha = 0.05; cx.translate(0, CH); cx.rotate(-Math.PI / 2); drawBrand(cx, 'p01', 140, 660, 1520, '#7a7464'); cx.restore();
-  const cardMat = new THREE.MeshStandardMaterial({ map: tex(cc), bumpMap: tex(bc, false), bumpScale: 5, roughness: 0.82 });
-  const edge = new THREE.MeshStandardMaterial({ color: '#efebe1', roughness: 0.9 });
-  const card = new THREE.Mesh(new THREE.BoxGeometry(2.2, 3.0, 0.02), [edge, edge, edge, edge, cardMat, edge]);
-  card.position.set(0.35, -0.05, 0.03); card.rotation.z = -0.03;
-  spin.add(card);
-
-  // fita oliva
-  const [rc, rx] = canvas(64, 512);
-  rx.fillStyle = HEX.oliva; rx.fillRect(0, 0, 64, 512);
-  for (let i = 0; i < 64; i += 2) { rx.fillStyle = `rgba(0,0,0,${Math.random() * 0.12})`; rx.fillRect(i, 0, 1, 512); }
-  const ribbonMat = new THREE.MeshPhysicalMaterial({ map: tex(rc), roughness: 0.55, sheen: 0.35, sheenColor: new THREE.Color(HEX.douradoClaro), sheenRoughness: 0.4 });
-  const ribbon = new THREE.Mesh(new THREE.BoxGeometry(0.34, 3.7, 0.02), ribbonMat);
-  ribbon.position.set(-0.95, 0, 0.065); ribbon.rotation.z = 0.04; spin.add(ribbon);
-  const knot = new THREE.Mesh(new THREE.SphereGeometry(0.2, 24, 16), ribbonMat);
-  knot.scale.set(1.1, 0.8, 0.35); knot.position.set(-0.95, 0.15, 0.1); spin.add(knot);
-  [-1, 1].forEach((sgn) => {
-    const loop = new THREE.Mesh(new THREE.TorusGeometry(0.2, 0.06, 10, 30, Math.PI * 1.4), ribbonMat);
-    loop.scale.set(1.2, 0.8, 0.4); loop.position.set(-0.95 + sgn * 0.26, 0.17, 0.1); loop.rotation.z = sgn > 0 ? -0.9 : Math.PI - 0.6 + 0.9;
-    spin.add(loop);
-  });
-
-  let near = false;
+  const phys = { v: 0 };
   return {
-    group, spin, freeSpin: false, limitSpin: 0.9, rest: { x: -0.5, y: 0.2 }, groundY: -1.95,
-    cam: { pos: { x: 0, y: 1.4, z: 8.4 }, target: { x: 0, y: -0.1, z: 0 } },
-    reset() { near = false; card.position.set(0.35, -0.05, 0.03); card.rotation.set(0, 0, -0.03); },
+    group, spin, freeSpin: true, rest: { x: 0.05, y: 0 }, groundY: -1.9,
+    cam: { pos: { x: 0, y: 0.3, z: 9.5 }, target: { x: 0, y: 0.2, z: 0 } },
+    reset() { phys.v = 0; spin.position.y = 0; },
     click() {
-      near = !near;
-      window.gsap.to(card.position, { x: near ? 0.15 : 0.35, y: near ? 0.25 : -0.05, z: near ? 1.6 : 0.03, duration: 1.4, ease: 'expo.inOut' });
-      window.gsap.to(card.rotation, { x: near ? 0.42 : 0, y: near ? -0.15 : 0, z: near ? 0 : -0.03, duration: 1.4, ease: 'expo.inOut' });
+      phys.v = 0.4;
+      window.gsap.timeline().to(spin.position, { y: 1.1, duration: 0.45, ease: 'power2.out' }).to(spin.position, { y: 0, duration: 0.7, ease: 'bounce.out' });
+    },
+    update(dt, t) {
+      spin.rotation.y += phys.v; phys.v *= 0.95;
+      sym.rotation.z = Math.sin(t * 1.1) * 0.03;
     },
   };
 }

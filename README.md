@@ -25,7 +25,7 @@ Funciona como site estático em qualquer hospedagem (GitHub Pages, Netlify, Verc
 | Paleta | Faixas que expandem no hover (com reflexo metálico nos dourados) e copiam o HEX no clique |
 | Tipografia | Teste de fonte editável (Marcellus / DM Sans), controle de tamanho e hierarquia |
 | AVRA | Seção "Um empreendimento da AVRA Incorporadora" e endosso secundário no hero e no fechamento |
-| Estúdio 3D | Mockups refeitos em WebGL: **letreiro dourado do pavilhão** (halo retroiluminado), **garrafa** (tampa abre), **caderno** (capa abre), **crachá** (balança e gira) e **convite** (baixo-relevo do P01). Dá para arrastar e clicar em todos |
+| Estúdio 3D | Mockups refeitos em WebGL a partir dos mockups aprovados: **totem de entrada** (anoitece com luz de chão), **recepção do pavilhão** (halo retroiluminado), **kit de apresentação** com endosso AVRA (a tampa abre), **caderno Mata** com foil (abre), **crachá** com endosso AVRA (balança e gira) e **chaveiro** dourado (gira e salta). Dá para arrastar e clicar em todos |
 | Tapume 3D | Os painéis da campanha se abrem como dominó durante a rolagem |
 | Instagram / stories | Tablet e celular em CSS 3D que reagem ao mouse |
 | Galeria | Os mockups do guia em rolagem horizontal com paralaxe interna e *lightbox* |
