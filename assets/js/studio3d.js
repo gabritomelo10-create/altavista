@@ -225,15 +225,21 @@ function makeSign() {
   const woodMat = new THREE.MeshStandardMaterial({ map: tex(mc), roughness: 0.6 });
   [-4.15, 4.15].forEach((x) => { const p = new THREE.Mesh(new THREE.BoxGeometry(0.7, 5.4, 0.35), woodMat); p.position.set(x, 0, -0.1); spin.add(p); });
 
-  // halo de luz atrás das letras (retroiluminação)
+  // halo de luz atrás das letras (retroiluminação).
+  // O desfoque é feito reduzindo e ampliando o canvas: ctx.filter não existe no Safari.
+  const blurred = (scale) => {
+    const [sc, sx] = canvas(Math.round(1240 / scale), Math.round(960 / scale));
+    drawBrand(sx, 'vertical', sc.width / 2, sc.height / 2, 1000 / scale, 'rgba(255,214,150,1)');
+    return sc;
+  };
   const [hc, hx] = canvas(1240, 960);
-  hx.filter = 'blur(28px)';
-  drawBrand(hx, 'vertical', 620, 480, 1000, 'rgba(255,226,160,0.95)');
-  hx.filter = 'blur(8px)';
-  drawBrand(hx, 'vertical', 620, 480, 980, 'rgba(255,236,190,0.7)');
+  hx.imageSmoothingEnabled = true; hx.imageSmoothingQuality = 'high';
+  hx.globalAlpha = 0.55; hx.drawImage(blurred(24), 0, 0, 1240, 960);
+  hx.globalAlpha = 0.45; hx.drawImage(blurred(10), 0, 0, 1240, 960);
   const haloMat = new THREE.MeshBasicMaterial({ map: tex(hc), transparent: true, blending: THREE.AdditiveBlending, depthWrite: false, opacity: 0 });
-  const halo = new THREE.Mesh(new THREE.PlaneGeometry(6.2, 4.8), haloMat);
-  halo.position.set(0, 0.25, -0.135); spin.add(halo);
+  // mesmo enquadramento do logo em relevo: 1000 px do canvas = 620 unidades do SVG
+  const halo = new THREE.Mesh(new THREE.PlaneGeometry((1240 / 1000) * 620 * 0.0062, (960 / 1000) * 620 * 0.0062), haloMat);
+  halo.position.set(0, 0.25, -0.14); spin.add(halo);
 
   // logo em relevo
   const logo = new THREE.Group();
