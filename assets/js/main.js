@@ -273,7 +273,8 @@ $$('.icon > *').forEach((p) => p.style.setProperty('--len', Math.ceil(p.getTotal
 ------------------------------------------------------------------- */
 (function buildSequence() {
   const host = $('#buildLogo');
-  const subs = subpaths(VERTICAL.symbol);
+  // ignora fragmentos degenerados do vetor (pontos soltos); o contorno mais interno é o lago
+  const subs = subpaths(VERTICAL.symbol).filter((d) => d.length > 60);
   const boxes = subs.map((d) => {
     const n = d.match(/-?\d+\.?\d*/g).map(Number);
     const xs = n.filter((_, i) => i % 2 === 0); const ys = n.filter((_, i) => i % 2 === 1);
