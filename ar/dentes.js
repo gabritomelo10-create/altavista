@@ -19,6 +19,13 @@ const SIDE = [
   { type: 'mol', w: 1.06, d: 1.0, h: 0.72 },  // molares
   { type: 'mol', w: 0.98, d: 0.96, h: 0.68 },
 ];
+const NAMES = ['Incisivo central', 'Incisivo lateral', 'Canino', '1º pré-molar', '2º pré-molar', '1º molar', '2º molar'];
+const INFO = {
+  inc: 'Corta os alimentos',
+  can: 'Rasga os alimentos',
+  pm: 'Tritura e ajuda a mastigar',
+  mol: 'Mói os alimentos',
+};
 const GAP = 0.035;
 const EMBED = 0.2; // quanto do dente fica dentro da gengiva
 
@@ -148,6 +155,9 @@ function buildArch({ scale, dir, mats }) {
     if (dir < 0) mesh.quaternion.multiply(new THREE.Quaternion().setFromAxisAngle(new THREE.Vector3(0, 0, 1), Math.PI));
     mesh.position.copy(p).addScaledVector(UP, -EMBED * dir);
     mesh.userData.spec = spec;
+    // o lado direito do paciente fica à esquerda de quem olha de frente
+    mesh.userData.name = `${NAMES[SIDE.indexOf(SIDE.find((x) => x.w === spec.w && x.type === spec.type))]} ${dir > 0 ? 'inferior' : 'superior'} ${spec.side < 0 ? 'direito' : 'esquerdo'}`;
+    mesh.userData.info = INFO[spec.type];
     group.add(mesh); teeth.push(mesh);
     s += w;
     if (i < seq.length - 1) {
@@ -207,8 +217,17 @@ export function createDenture({ onProgress } = {}) {
   upper.group.position.set(0, 1.55, -lower.arch.backZ);
   hinge.add(upper.group);
   root.add(hinge);
-  let openTarget = 0.5, open = 0.5;
+  let openTarget = 0.5, open = 0.5, sepTarget = 0, sep = 0;
   hinge.rotation.x = -open;
+
+  // destaque do dente tocado
+  const highlightMat = new THREE.MeshPhysicalMaterial({ color: '#fffaf0', emissive: '#29c3d8', emissiveIntensity: 0.55, roughness: 0.25, clearcoat: 0.9 });
+  let selected = null;
+  function select(mesh) {
+    if (selected) selected.material = selected.userData.baseMat;
+    selected = mesh;
+    if (mesh) { mesh.userData.baseMat = mesh.userData.baseMat || mesh.material; mesh.material = highlightMat; }
+  }
 
   /* ----- sujeira entre os dentes de baixo ----- */
   const gaps = lower.gaps;
@@ -295,8 +314,12 @@ export function createDenture({ onProgress } = {}) {
 
   function update(dt) {
     dt = Math.min(dt, 0.1);
-    open = lerp(open, openTarget, 1 - Math.exp(-dt * 6));
+    const f = 1 - Math.exp(-dt * 6);
+    sep = lerp(sep, sepTarget, f);
+    open = lerp(open, sepTarget ? 0.95 : openTarget, f);
     hinge.rotation.x = -open;
+    hinge.position.y = 0.15 + sep * 1.5;
+    hinge.position.z = lower.arch.backZ - sep * 0.6;
 
     if (!st.paused) {
       st.t += dt;
@@ -375,29 +398,27 @@ export function createDenture({ onProgress } = {}) {
     report();
   }
 
-  // Toque: num dente de baixo ou na sujeira vai para o vão mais próximo; no arco de cima abre/fecha a boca.
+  // Toque: destaca o dente e mostra o nome. Nos dentes de baixo (ou na sujeira) o fio vai para o vão mais próximo.
   function handleTap(raycaster) {
-    const lowerHits = raycaster.intersectObjects([...lower.teeth, dirtGroup], true);
-    const upperHits = raycaster.intersectObjects(upper.teeth, false);
-    if (upperHits.length && (!lowerHits.length || upperHits[0].distance < lowerHits[0].distance)) {
-      openTarget = openTarget > 0.4 ? 0.12 : 0.5;
-      return 'boca';
-    }
-    if (!lowerHits.length) return null;
-    const local = root.worldToLocal(lowerHits[0].point.clone());
+    const hits = raycaster.intersectObjects([...lower.teeth, ...upper.teeth, dirtGroup], true);
+    if (!hits.length) { select(null); return null; }
+    const hit = hits[0].object;
+    const isTooth = lower.teeth.includes(hit) || upper.teeth.includes(hit);
+    select(isTooth ? hit : null);
+    if (upper.teeth.includes(hit)) return { tooth: hit };
+    const local = root.worldToLocal(hits[0].point.clone());
     let best = -1, bd = Infinity;
     gaps.forEach((g, i) => { const d = g.p.distanceTo(local) + (clean[i] ? 0.6 : 0); if (d < bd) { bd = d; best = i; } });
-    if (best < 0) return null;
+    if (best < 0) return isTooth ? { tooth: hit } : null;
     if (clean[best]) { // vão limpo: suja só ele de novo para dar pra ver outra vez
       clean[best] = false;
       particles.forEach((pt) => { if (pt.gap === best) { pt.state = 'popping'; pt.t = 0; pt.delay = Math.random() * 0.3; } });
       report();
     }
-    if (openTarget < 0.4) openTarget = 0.5;
     st.requested = best;
     if (st.phase === 'down' || st.phase === 'saw') { st.phase = 'up'; st.t = 0; }
     else if (st.phase === 'move' || st.phase === 'rest') { st.fromS = st.s; st.gap = best; st.requested = null; st.phase = 'move'; st.t = 0; }
-    return 'vao';
+    return isTooth ? { tooth: hit } : { gap: best };
   }
 
   report();
@@ -407,6 +428,10 @@ export function createDenture({ onProgress } = {}) {
     reset,
     handleTap,
     setPaused(v) { st.paused = v; },
+    select,
+    get selected() { return selected; },
+    toggleMouth() { if (sepTarget) sepTarget = 0; openTarget = openTarget > 0.3 ? 0.06 : 0.5; return openTarget > 0.3; },
+    toggleSeparate() { sepTarget = sepTarget ? 0 : 1; return !!sepTarget; },
     get paused() { return st.paused; },
     total: gaps.length,
   };

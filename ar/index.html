@@ -8,6 +8,10 @@
   <script type="importmap">
     { "imports": { "three": "../assets/vendor/three/three.module.min.js", "three/addons/": "../assets/vendor/three/addons/" } }
   </script>
+  <link rel="modulepreload" href="./vendor/mindar/mindar-image-three.prod.js">
+  <link rel="modulepreload" href="./vendor/mindar/controller-mGt1s8dJ.js">
+  <link rel="modulepreload" href="./vendor/mindar/ui-fBadYuor.js">
+  <link rel="modulepreload" href="./dentes.js">
   <style>
     :root { --azul: #0b3954; --menta: #5fd6e8; --coral: #ff5a5f; --ouro: #f6ae2d; --papel: #f4f1ea; }
     * { box-sizing: border-box; }
@@ -41,9 +45,29 @@
     .track { width: 70px; height: 6px; border-radius: 3px; background: rgba(255, 255, 255, .18); overflow: hidden; }
     #bar { height: 100%; background: var(--menta); transform-origin: left; transform: scaleX(0); transition: transform .4s; }
     .bottom { display: grid; gap: 10px; justify-items: center; }
-    .hint { background: rgba(8, 31, 48, .7); border-radius: 12px; padding: 8px 12px; font-size: 13px; color: #d7eaf3; text-align: center; max-width: 340px; }
-    .row { display: flex; gap: 8px; pointer-events: auto; }
-    .row button { background: rgba(8, 31, 48, .82); color: #fff; padding: 11px 16px; font-size: 14px; backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px); }
+    .hint { background: rgba(8, 31, 48, .7); border-radius: 12px; padding: 8px 12px; font-size: 13px; color: #d7eaf3; text-align: center; max-width: 340px; transition: opacity .6s; }
+    .hint.fade { opacity: 0; }
+    .tools { display: flex; gap: 6px; pointer-events: auto; background: rgba(8, 31, 48, .82); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border-radius: 20px; padding: 6px; max-width: 100%; overflow-x: auto; scrollbar-width: none; }
+    .tools::-webkit-scrollbar { display: none; }
+    .tools button { flex: none; flex-direction: column; gap: 2px; background: transparent; color: #fff; padding: 7px 10px; border-radius: 14px; font-size: 19px; min-width: 58px; }
+    .tools button span { font-size: 11px; font-weight: 600; color: #cfe3ef; }
+    .tools button.on { background: rgba(95, 214, 232, .22); }
+    .tools button:active { background: rgba(255, 255, 255, .12); }
+    #btn-pin { position: absolute; left: 50%; transform: translateX(-50%); top: max(64px, calc(env(safe-area-inset-top) + 50px)); pointer-events: auto; background: rgba(8, 31, 48, .82); color: #fff; padding: 9px 16px; font-size: 14px; }
+    #btn-pin.on { background: var(--ouro); color: var(--azul); }
+
+    #label { position: fixed; left: 0; top: 0; z-index: 6; pointer-events: none; }
+    #label > div { transform: translate(-50%, calc(-100% - 18px)); background: #fff; color: var(--azul); border-radius: 12px; padding: 7px 12px; white-space: nowrap; box-shadow: 0 8px 24px rgba(0, 0, 0, .3); text-align: center; }
+    #label > div::after { content: ""; position: absolute; left: 50%; bottom: -6px; width: 12px; height: 12px; background: #fff; transform: translateX(-50%) rotate(45deg); }
+    #label strong { display: block; font-size: 14px; }
+    #label small { font-size: 12px; color: #4b6476; }
+
+    #loading { position: fixed; inset: 0; z-index: 8; display: grid; place-items: center; background: #0b3954; }
+    .load-in { display: grid; gap: 14px; justify-items: center; text-align: center; padding: 20px; }
+    .spinner { width: 54px; height: 54px; border-radius: 50%; border: 4px solid rgba(255, 255, 255, .15); border-top-color: var(--ouro); animation: spin 0.9s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .load-track { width: 200px; height: 6px; border-radius: 3px; background: rgba(255, 255, 255, .15); overflow: hidden; }
+    #load-bar { display: block; height: 100%; background: var(--ouro); transform-origin: left; transform: scaleX(0); transition: transform .5s; }
     #btn-exit { padding: 8px 14px; pointer-events: auto; background: rgba(8, 31, 48, .78); color: #fff; font-size: 14px; }
 
     #scan { position: fixed; inset: 0; z-index: 4; pointer-events: none; display: grid; place-items: center; }
@@ -72,7 +96,7 @@
       <ol class="steps">
         <li><b>1</b><span>Imprima o marcador ou abra-o na tela de outro aparelho.</span></li>
         <li><b>2</b><span>Toque em <strong>Abrir câmera</strong> e aponte para o marcador.</span></li>
-        <li><b>3</b><span>Toque num vão sujo para limpar, arraste para girar e use dois dedos para aumentar.</span></li>
+        <li><b>3</b><span>Gire com um dedo, aproxime com dois e toque num dente para ver o nome. Com 📌 a dentadura fica na tela mesmo sem o marcador.</span></li>
       </ol>
       <div id="secure-warning" class="warn" hidden>Esta página não está em HTTPS, então o navegador não libera a câmera. Use o modo 3D ou abra pelo endereço publicado com https.</div>
       <div class="actions">
@@ -90,15 +114,29 @@
 
   <div id="hud" hidden>
     <div class="top">
-      <div class="pill">Vãos limpos <span id="count">0/26</span><span class="track"><span id="bar"></span></span></div>
+      <div class="pill">Vãos limpos <span id="count">0/13</span><span class="track"><span id="bar"></span></span></div>
       <button id="btn-exit">✕ Sair</button>
     </div>
+    <button id="btn-pin" hidden>📌 Fixar na tela</button>
     <div class="bottom">
-      <div class="hint">Toque num vão sujo para o fio ir até ele · toque nos dentes de cima para abrir ou fechar a boca</div>
-      <div class="row">
-        <button id="btn-pause">⏸ Pausar</button>
-        <button id="btn-reset">↺ Sujar de novo</button>
+      <div class="hint" id="hint">1 dedo gira · 2 dedos aproximam e movem · toque num dente para ver o nome · toque duplo volta ao início</div>
+      <div class="tools">
+        <button id="btn-pause">⏸<span>Pausar</span></button>
+        <button id="btn-mouth">👄<span>Fechar</span></button>
+        <button id="btn-sep">↕️<span>Separar</span></button>
+        <button id="btn-reset">🦠<span>Sujar</span></button>
+        <button id="btn-center">🎯<span>Centralizar</span></button>
       </div>
+    </div>
+  </div>
+
+  <div id="label" hidden><div><strong id="label-name"></strong><small id="label-info"></small></div></div>
+
+  <div id="loading" hidden>
+    <div class="load-in">
+      <div class="spinner"></div>
+      <strong id="load-step">Carregando…</strong>
+      <span class="load-track"><span id="load-bar"></span></span>
     </div>
   </div>
 

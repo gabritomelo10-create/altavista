@@ -38,7 +38,9 @@ A página respeita `prefers-reduced-motion`, que desativa a rolagem suave e as a
 Página separada em `ar/index.html`: uma dentadura 3D aparece em cima de um marcador impresso e um fio dental passa vão por vão nos dentes de baixo, tirando a sujeira.
 
 - **Marcador:** `ar/assets/marcador.png` (imprima com 10 a 20 cm ou mostre em outra tela). O alvo compilado do MindAR é `ar/assets/marcador.mind`.
-- **Interação:** tocar num vão leva o fio até ele, tocar nos dentes de cima abre ou fecha a boca, arrastar gira e o gesto de pinça muda o tamanho. Há botões para pausar e sujar de novo.
+- **Interação:** 1 dedo gira para os lados e inclina, 2 dedos aproximam (pinça) e movem, toque duplo volta à vista inicial. Tocar num dente destaca e mostra o nome e a função; nos dentes de baixo o fio vai até o vão mais próximo. Botões: pausar, abrir/fechar a boca, separar os arcos, sujar de novo e centralizar.
+- **Fixar na tela (📌):** a dentadura para de seguir o marcador e fica parada na tela, para examinar sem precisar manter o marcador à vista. Quando o marcador sai de vista, ela também fica onde estava.
+- **Carregamento:** o rastreador (MindAR + TensorFlow) e o marcador são baixados enquanto a pessoa lê a tela de abertura (`modulepreload` + `fetch` em segundo plano). Numa rede de 4 Mbps simulada, o tempo entre tocar em "Abrir câmera" e o rastreador ficar pronto caiu de ~9,4 s para ~2,1 s.
 - **Sem câmera:** `ar/index.html?3d` (ou o botão "Ver em 3D sem câmera") mostra a mesma cena com o marcador sobre uma mesa virtual.
 - **Câmera exige HTTPS.** Em `localhost` funciona no computador; no celular, abra pela versão publicada (GitHub Pages, Netlify, Vercel).
 - **Trocar o marcador:** gere um novo `.mind` com a sua imagem no compilador do MindAR (https://hiukim.github.io/mind-ar-js-doc/tools/compile) e substitua `ar/assets/marcador.mind` e `marcador.png`. Imagens com muitos detalhes e contraste rastreiam melhor.
