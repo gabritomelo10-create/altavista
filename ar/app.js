@@ -251,7 +251,10 @@ async function startAR() {
     ui.loading.hidden = true;
     ui.hud.hidden = false;
     ui.scan.hidden = false;
-    bindGestures(renderer.domElement, camera, { ar: true });
+    // O MindAR põe uma camada CSS3D por cima do canvas; ela engolia os toques no celular.
+    // Os gestos ficam no contêiner (recebe os toques de qualquer camada) e a camada CSS não captura nada.
+    mindar.cssRenderer.domElement.style.pointerEvents = 'none';
+    bindGestures(ui.stage, camera, { ar: true });
 
     const clock = new THREE.Clock();
     renderer.setAnimationLoop(() => {
