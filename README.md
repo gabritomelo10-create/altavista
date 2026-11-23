@@ -33,6 +33,17 @@ Funciona como site estático em qualquer hospedagem (GitHub Pages, Netlify, Verc
 
 A página respeita `prefers-reduced-motion`, que desativa a rolagem suave e as animações longas.
 
+## Realidade aumentada: fio dental (`ar/`)
+
+Página separada em `ar/index.html`: uma dentadura 3D aparece em cima de um marcador impresso e um fio dental passa vão por vão nos dentes de baixo, tirando a sujeira.
+
+- **Marcador:** `ar/assets/marcador.png` (imprima com 10 a 20 cm ou mostre em outra tela). O alvo compilado do MindAR é `ar/assets/marcador.mind`.
+- **Interação:** tocar num vão leva o fio até ele, tocar nos dentes de cima abre ou fecha a boca, arrastar gira e o gesto de pinça muda o tamanho. Há botões para pausar e sujar de novo.
+- **Sem câmera:** `ar/index.html?3d` (ou o botão "Ver em 3D sem câmera") mostra a mesma cena com o marcador sobre uma mesa virtual.
+- **Câmera exige HTTPS.** Em `localhost` funciona no computador; no celular, abra pela versão publicada (GitHub Pages, Netlify, Vercel).
+- **Trocar o marcador:** gere um novo `.mind` com a sua imagem no compilador do MindAR (https://hiukim.github.io/mind-ar-js-doc/tools/compile) e substitua `ar/assets/marcador.mind` e `marcador.png`. Imagens com muitos detalhes e contraste rastreiam melhor.
+- **Bibliotecas:** MindAR 1.2.5 em `ar/vendor/mindar/`, com um ajuste de uma linha para funcionar com o Three.js r170 (`outputEncoding` virou `outputColorSpace`).
+
 ## Estrutura
 
 ```
@@ -47,6 +58,10 @@ assets/
     hero3d.js        símbolo 3D do hero (Three.js)
     studio3d.js      estúdio de mockups 3D (Three.js)
   vendor/     three.js r170, GSAP 3.12 + ScrollTrigger, Lenis 1.1
+ar/
+  index.html, app.js (câmera, interface, toques), dentes.js (dentadura, fio e sujeira)
+  assets/     marcador.png, marcador.mind
+  vendor/     MindAR 1.2.5
 ```
 
 ## Fidelidade à marca
